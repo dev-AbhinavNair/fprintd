@@ -2740,6 +2740,9 @@ class FPrintdVirtualDeviceVerificationTests(FPrintdVirtualDeviceBaseTest):
     def test_verify_retry_center_finger(self):
         self.assertVerifyRetry(FPrint.DeviceRetry.CENTER_FINGER, 'verify-finger-not-centered')
 
+    def test_verify_retry_too_fast(self):
+        self.assertVerifyRetry(FPrint.DeviceRetry.TOO_FAST, 'verify-swipe-too-fast')
+
     def test_verify_error_general(self):
         self.assertVerifyError(FPrint.DeviceError.GENERAL, 'verify-unknown-error')
 

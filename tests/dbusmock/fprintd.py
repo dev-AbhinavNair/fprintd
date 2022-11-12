@@ -56,6 +56,7 @@ VALID_VERIFY_STATUS = [
     'verify-swipe-too-short',
     'verify-finger-not-centered',
     'verify-remove-and-retry',
+    'verify-swipe-too-fast',
     'verify-disconnected',
     'verify-unknown-error'
 ]

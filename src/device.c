@@ -602,6 +602,9 @@ verify_result_to_name (gboolean match, GError *error)
         case FP_DEVICE_RETRY_REMOVE_FINGER:
           return "verify-remove-and-retry";
 
+        case FP_DEVICE_RETRY_TOO_FAST:
+          return "verify-swipe-too-fast";
+
         default:
           return "verify-retry-scan";
         }
