@@ -516,9 +516,11 @@ do_verify (sd_bus      *bus,
 #ifdef __linux__
           struct signalfd_siginfo siginfo;
 #endif
-          int64_t wait_time;
+          int64_t wait_time = INT64_MAX;
 
-          wait_time = verification_end - now ();
+          if (verification_end != ULONG_MAX)
+            wait_time = verification_end - now ();
+
           if (wait_time <= 0)
             break;
 
@@ -891,7 +893,7 @@ pam_sm_authenticate (pam_handle_t *pamh, int flags, int argc,
               if (debug)
                 pam_syslog (pamh, LOG_DEBUG, "max_tries specified as: %d", max_tries);
             }
-          else if (str_has_prefix (argv[i], TIMEOUT_MATCH) && strlen (argv[i]) <= strlen (TIMEOUT_MATCH) + 2)
+          else if (str_has_prefix (argv[i], TIMEOUT_MATCH) && strlen (argv[i]) > strlen (TIMEOUT_MATCH))
             {
               int opt_timeout = atoi (argv[i] + strlen (TIMEOUT_MATCH));
               timeout = (opt_timeout < 0 ? UINT_MAX : (unsigned) opt_timeout);
