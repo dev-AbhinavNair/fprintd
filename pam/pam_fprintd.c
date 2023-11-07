@@ -75,7 +75,7 @@
 
 #define DEFAULT_MAX_TRIES 3
 #define DEFAULT_TIMEOUT 30
-#define MIN_TIMEOUT 10
+#define MIN_TIMEOUT 1
 
 #define DEBUG_MATCH "debug="
 #define MAX_TRIES_MATCH "max-tries="

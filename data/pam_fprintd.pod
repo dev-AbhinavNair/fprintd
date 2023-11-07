@@ -30,7 +30,7 @@ authentication failure. The minimum number of tries is 1 while the default is 3.
 =item B<timeout=I<TIMEOUT>>
 
 The amount of time before returning an authentication failure. The default timeout
-is 30 seconds, with 10 seconds being the minimum.
+is 30 seconds, with 1 second being the minimum.
 
 =back
 
