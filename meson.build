@@ -91,18 +91,35 @@ gmodule_dep = dependency('gmodule-2.0', version: '>=' + glib_min_version)
 libfprint_dep = dependency('libfprint-2', version: '>=' + libfprint_min_version)
 polkit_gobject_dep = dependency('polkit-gobject-1', version: '>= 0.91')
 dbus_dep = dependency('dbus-1', required: false)
-libsystemd_dep = dependency(get_option('libsystemd'), required: get_option('pam'))
-pam_dep = cc.find_library('pam',
-    required: get_option('pam'),
-    has_headers: 'security/pam_modules.h',
-)
 
-# Check if the PAM implementation is OpenPAM instead of linux-pam
-has_openpam = cc.check_header('security/openpam.h', required: false)
+if get_option('pam')
+  libsystemd_dep = dependency(get_option('libsystemd'), required: true)
+
+  has_openpam = false
+  pam_dep = cc.find_library('pam',
+      required: true,
+      has_headers: 'security/pam_modules.h',
+  )
+
+  # Check if the PAM implementation is OpenPAM instead of linux-pam
+  if host_machine.system().endswith('bsd') or host_machine.system() == 'dragonfly'
+    has_openpam = cc.compiles('''
+       #include <security/pam_modules.h>
+       #include <security/openpam.h>
+       int main(void) { return 0; }
+      ''',
+      dependencies: pam_dep,
+      name: 'openpam',
+    )
+    assert(has_openpam)
+  endif
+endif
 
 if host_machine.system() == 'linux' or host_machine.system() == 'gnu'
   gettext_deps = []
-elif host_machine.system() == 'freebsd' or host_machine.system() == 'openbsd' or host_machine.system() == 'dragonfly'
+elif (host_machine.system() == 'freebsd' or
+      host_machine.system() == 'openbsd' or
+      host_machine.system() == 'dragonfly')
   gettext_deps = [cc.find_library('intl', dirs: ['/usr/local/lib'])]
 elif host_machine.system() == 'netbsd'
   gettext_deps = [cc.find_library('intl', dirs: ['/usr/pkg/lib'])]

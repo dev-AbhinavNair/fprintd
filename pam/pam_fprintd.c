@@ -58,6 +58,8 @@
 
 #else /* defined (FPRINTD_PAM_USE_OPENPAM) */
 
+#include <security/openpam.h>
+
 #define pam_syslog(H, C, ...) \
         syslog (C, __VA_ARGS__)
 
