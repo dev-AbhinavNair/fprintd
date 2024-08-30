@@ -50,10 +50,18 @@
 #define PAM_SM_AUTH
 #include <security/pam_modules.h>
 #include <security/pam_appl.h>
-#if defined(FPRINTD_PAM_USE_OPENPAM)
-#define pam_syslog(H, C, ...)       syslog (C, __VA_ARGS__)
-#else
+
+#ifndef FPRINTD_PAM_USE_OPENPAM
 #include <security/pam_ext.h>
+
+#define FPRINTD_PAM_INCOMPLETE PAM_INCOMPLETE
+
+#else /* defined (FPRINTD_PAM_USE_OPENPAM) */
+
+#define pam_syslog(H, C, ...) \
+        syslog (C, __VA_ARGS__)
+
+#define FPRINTD_PAM_INCOMPLETE PAM_CONV_ERR
 #endif
 
 #define _(s) ((char *) dgettext (GETTEXT_PACKAGE, s))
@@ -475,11 +483,7 @@ do_verify (sd_bus      *bus,
 
       data->timed_out = false;
       data->verify_started = false;
-#if defined(FPRINTD_PAM_USE_OPENPAM)
-      data->verify_ret = PAM_CONV_ERR;
-#else
-      data->verify_ret = PAM_INCOMPLETE;
-#endif
+      data->verify_ret = FPRINTD_PAM_INCOMPLETE;
 
       free (data->result);
       data->result = NULL;
@@ -530,11 +534,7 @@ do_verify (sd_bus      *bus,
           r = sd_bus_process (bus, NULL);
           if (r < 0)
             break;
-#if defined(FPRINTD_PAM_USE_OPENPAM)
-          if (data->verify_ret != PAM_CONV_ERR)
-#else
-          if (data->verify_ret != PAM_INCOMPLETE)
-#endif
+          if (data->verify_ret != FPRINTD_PAM_INCOMPLETE)
             break;
           if (!data->verify_started)
             continue;
@@ -571,11 +571,7 @@ do_verify (sd_bus      *bus,
             }
         }
 
-#if defined(FPRINTD_PAM_USE_OPENPAM)
-      if (data->verify_ret != PAM_CONV_ERR)
-#else
-      if (data->verify_ret != PAM_INCOMPLETE)
-#endif
+      if (data->verify_ret != FPRINTD_PAM_INCOMPLETE)
         return data->verify_ret;
 
       if (now () >= verification_end)

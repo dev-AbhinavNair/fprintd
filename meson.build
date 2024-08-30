@@ -96,8 +96,9 @@ pam_dep = cc.find_library('pam',
     required: get_option('pam'),
     has_headers: 'security/pam_modules.h',
 )
+
 # Check if the PAM implementation is OpenPAM instead of linux-pam
-has_openpam = cc.check_header('security/openpam.h')
+has_openpam = cc.check_header('security/openpam.h', required: false)
 
 if host_machine.system() == 'linux' or host_machine.system() == 'gnu'
   gettext_deps = []
