@@ -72,6 +72,8 @@ class TestPamFprintd(dbusmock.DBusTestCase):
         # Remove pam wrapper files, as they may break other tests
         [shutil.rmtree(i) for i in glob.glob('/tmp/pam.[0-9A-z]')]
 
+        dbusmock.DBusTestCase.tearDownClass()
+
     def setUp(self):
         (self.p_mock, self.obj_fprintd_manager) = self.spawn_server_template(
             self.template_name, {})
