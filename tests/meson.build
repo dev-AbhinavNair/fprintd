@@ -90,6 +90,13 @@ test_envs = [
 ]
 
 if address_sanitizer
+    lsan_suppress = files('LSAN-leaks-suppress.txt')[0]
+    if meson.version().version_compare('>=1.4')
+        lsan_suppress = lsan_suppress.full_path()
+    else
+        lsan_suppress = meson.project_source_root() / '@0@'.format(lsan_suppress)
+    endif
+
     timeout_multiplier = 3
     test_envs += [
         'ADDRESS_SANITIZER=true',
@@ -100,8 +107,7 @@ if address_sanitizer
         'LSAN_OPTIONS=@0@'.format(':'.join([
             'exitcode=0',
             'strict_string_checks=true',
-            'suppressions=@0@'.format(
-                files(meson.current_source_dir() / 'LSAN-leaks-suppress.txt')[0]),
+            'suppressions=@0@'.format(lsan_suppress),
         ])),
     ]
 endif

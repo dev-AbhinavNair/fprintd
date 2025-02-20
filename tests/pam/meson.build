@@ -30,7 +30,12 @@ foreach libname: preloaded_libs
 
     if lib != '' and lib[0] == '/'
         message('Found library @0@ as @1@'.format(libname, lib))
-        pam_tests_ld_preload += '@0@'.format(files(lib)[0])
+        preload_lib_path = files(lib)[0]
+        if meson.version().version_compare('>=1.4')
+            pam_tests_ld_preload += preload_lib_path.full_path()
+        else
+            pam_tests_ld_preload += '@0@'.format(preload_lib_path)
+        endif
     else
         tests = []
         warning('No library found for ' + libname + ', skipping PAM tests')
