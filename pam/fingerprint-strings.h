@@ -175,9 +175,19 @@ verify_result_str_to_msg (const char *result, bool is_swipe)
   if (strcmp (result, "verify-swipe-too-short") == 0)
     return TR (N_("Swipe was too short, try again"));
   if (strcmp (result, "verify-finger-not-centered") == 0)
-    return TR (N_("Your finger was not centered, try swiping your finger again"));
+    {
+      if (is_swipe)
+        return TR (N_("Your finger was not centered, try swiping your finger again"));
+      else
+        return TR (N_("Your finger was not centered, try touching the sensor again"));
+    }
   if (strcmp (result, "verify-remove-and-retry") == 0)
-    return TR (N_("Remove your finger, and try swiping your finger again"));
+    {
+      if (is_swipe)
+        return TR (N_("Remove your finger, and try swiping your finger again"));
+      else
+        return TR (N_("Remove your finger, and try touching the sensor again"));
+    }
   if (strcmp (result, "verify-too-fast") == 0)
     {
       if (is_swipe)
@@ -210,9 +220,19 @@ enroll_result_str_to_msg (const char *result, bool is_swipe)
   if (strcmp (result, "enroll-swipe-too-short") == 0)
     return TR (N_("Swipe was too short, try again"));
   if (strcmp (result, "enroll-finger-not-centered") == 0)
-    return TR (N_("Your finger was not centered, try swiping your finger again"));
+    {
+      if (is_swipe)
+        return TR (N_("Your finger was not centered, try swiping your finger again"));
+      else
+        return TR (N_("Your finger was not centered, try touching the sensor again"));
+    }
   if (strcmp (result, "enroll-remove-and-retry") == 0)
-    return TR (N_("Remove your finger, and try swiping your finger again"));
+    {
+      if (is_swipe)
+        return TR (N_("Remove your finger, and try swiping your finger again"));
+      else
+        return TR (N_("Remove your finger, and try touching the sensor again"));
+    }
   if (strcmp (result, "enroll-too-fast") == 0)
     {
       if (is_swipe)
