@@ -63,7 +63,7 @@ add_project_arguments(common_cflags, language: 'c')
 
 host_system = host_machine.system()
 glib_min_version = '2.64'
-libfprint_min_version = '1.94.0'
+libfprint_min_version = '1.94.9'
 
 glib_version_def = 'GLIB_VERSION_@0@_@1@'.format(
     glib_min_version.split('.')[0], glib_min_version.split('.')[1])
