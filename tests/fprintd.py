@@ -1619,7 +1619,7 @@ class FPrintdVirtualDeviceTest(FPrintdVirtualDeviceBaseTest):
 
         # Now remove the device while we are enrolling, which will cause an error
         self.send_remove()
-        self.wait_for_result(expected='enroll-unknown-error')
+        self.wait_for_result(expected='enroll-disconnected')
 
         # The device will still be there now until it is released
         devices = self.manager.GetDevices()
@@ -2485,6 +2485,12 @@ class FPrintdVirtualDeviceEnrollTests(FPrintdVirtualDeviceBaseTest):
     def test_enroll_error_proto(self):
         self.assertEnrollError(FPrint.DeviceError.PROTO, 'enroll-disconnected')
 
+    def test_enroll_error_too_hot(self):
+        self.assertEnrollError(FPrint.DeviceError.TOO_HOT, 'enroll-disconnected')
+
+    def test_enroll_error_removed(self):
+        self.assertEnrollError(FPrint.DeviceError.REMOVED, 'enroll-disconnected')
+
     def test_enroll_error_data_invalid(self):
         self.assertEnrollError(FPrint.DeviceError.DATA_INVALID, 'enroll-unknown-error')
 
@@ -2763,6 +2769,12 @@ class FPrintdVirtualDeviceVerificationTests(FPrintdVirtualDeviceBaseTest):
 
     def test_verify_error_proto(self):
         self.assertVerifyError(FPrint.DeviceError.PROTO, 'verify-disconnected')
+
+    def test_verify_error_too_hot(self):
+        self.assertVerifyError(FPrint.DeviceError.TOO_HOT, 'verify-disconnected')
+
+    def test_verify_error_removed(self):
+        self.assertVerifyError(FPrint.DeviceError.REMOVED, 'verify-disconnected')
 
     def test_verify_error_data_invalid(self):
         self.assertVerifyError(FPrint.DeviceError.DATA_INVALID, 'verify-unknown-error')

@@ -616,6 +616,10 @@ verify_result_to_name (gboolean match, GError *error)
        */
       if (g_error_matches (error, FP_DEVICE_ERROR, FP_DEVICE_ERROR_PROTO))
         return "verify-disconnected";
+      else if (g_error_matches (error, FP_DEVICE_ERROR, FP_DEVICE_ERROR_REMOVED))
+        return "verify-disconnected";
+      else if (g_error_matches (error, FP_DEVICE_ERROR, FP_DEVICE_ERROR_TOO_HOT))
+        return "verify-disconnected";
       else if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED) ||
                g_error_matches (error, FP_DEVICE_ERROR, FP_DEVICE_ERROR_DATA_NOT_FOUND))
         return "verify-no-match";
@@ -663,6 +667,10 @@ enroll_result_to_name (gboolean completed, gboolean enrolled, GError *error)
        * Are drivers/libfprint/fprintd really in agreement here?
        */
       if (g_error_matches (error, FP_DEVICE_ERROR, FP_DEVICE_ERROR_PROTO))
+        return "enroll-disconnected";
+      else if (g_error_matches (error, FP_DEVICE_ERROR, FP_DEVICE_ERROR_REMOVED))
+        return "enroll-disconnected";
+      else if (g_error_matches (error, FP_DEVICE_ERROR, FP_DEVICE_ERROR_TOO_HOT))
         return "enroll-disconnected";
       else if (g_error_matches (error, FP_DEVICE_ERROR, FP_DEVICE_ERROR_DATA_FULL))
         return "enroll-data-full";
