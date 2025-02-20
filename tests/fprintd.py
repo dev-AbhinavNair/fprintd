@@ -2503,6 +2503,9 @@ class FPrintdVirtualDeviceEnrollTests(FPrintdVirtualDeviceBaseTest):
     def test_enroll_error_data_full(self):
         self.assertEnrollError(FPrint.DeviceError.DATA_FULL, 'enroll-data-full')
 
+    def test_enroll_error_data_duplicate(self):
+        self.assertEnrollError(FPrint.DeviceError.DATA_DUPLICATE, 'enroll-duplicate')
+
     def test_enroll_already_enrolled_finger(self):
         self.enroll_image('whorl', start=False)
 
