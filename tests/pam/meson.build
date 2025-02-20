@@ -49,8 +49,8 @@ foreach t: tests
             'file': files(meson.current_source_dir() / t + '.py')[0],
             'is_parallel': false,
             'env': [
-                'TOPBUILDDIR=' + meson.build_root(),
-                'TOPSRCDIR=' + meson.source_root(),
+                'TOPBUILDDIR=' + meson.project_build_root(),
+                'TOPSRCDIR=' + meson.project_source_root(),
                 'LD_PRELOAD=' + ' '.join(pam_tests_ld_preload),
                 'PAM_WRAPPER=1',
                 'PAM_WRAPPER_DEBUGLEVEL=2',

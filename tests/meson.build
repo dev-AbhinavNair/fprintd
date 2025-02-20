@@ -31,8 +31,8 @@ foreach t: tests
             'env': [
                 'G_DEBUG=fatal-criticals',
                 'G_MESSAGES_DEBUG=all',
-                'FPRINT_BUILD_DIR=' + meson.build_root() / 'src',
-                'TOPSRCDIR=' + meson.source_root(),
+                'FPRINT_BUILD_DIR=' + meson.project_build_root() / 'src',
+                'TOPSRCDIR=' + meson.project_source_root(),
             ],
             'depends': [
                 fprintd,
@@ -75,7 +75,7 @@ foreach pt: python_tests
             args: ut_args,
             suite: ut_suite,
             depends: pt.get('depends', []),
-            workdir: pt.get('workdir', meson.build_root()),
+            workdir: pt.get('workdir', meson.project_build_root()),
             env: pt.get('env', []),
             timeout: pt.get('timeout', 30),
             is_parallel: pt.get('is_parallel', true),
