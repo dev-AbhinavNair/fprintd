@@ -240,6 +240,8 @@ enroll_result_str_to_msg (const char *result, bool is_swipe)
       else
         return TR (N_("Finger scan was too fast, try again"));
     }
+  if (strcmp (result, "enroll-duplicate") == 0)
+    return TR (N_("The fingerprint has been already enrolled. Try using another finger."));
 
   return NULL;
 }
