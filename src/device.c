@@ -603,7 +603,7 @@ verify_result_to_name (gboolean match, GError *error)
           return "verify-remove-and-retry";
 
         case FP_DEVICE_RETRY_TOO_FAST:
-          return "verify-swipe-too-fast";
+          return "verify-too-fast";
 
         default:
           return "verify-retry-scan";

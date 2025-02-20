@@ -182,9 +182,9 @@
 						</doc:definition>
 					</doc:item>
 					<doc:item>
-						<doc:term>verify-swipe-too-fast</doc:term>
+						<doc:term>verify-too-fast</doc:term>
 						<doc:definition>
-							The user's swipe was too fast. The user should retry scanning their finger, the verification is still ongoing.
+							The user's swipe or touch was too fast. The user should retry scanning their finger, the verification is still ongoing.
 						</doc:definition>
 					</doc:item>
 					<doc:item>

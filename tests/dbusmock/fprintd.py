@@ -53,10 +53,10 @@ VALID_VERIFY_STATUS = [
     'verify-no-match',
     'verify-match',
     'verify-retry-scan',
+    'verify-too-fast',
     'verify-swipe-too-short',
     'verify-finger-not-centered',
     'verify-remove-and-retry',
-    'verify-swipe-too-fast',
     'verify-disconnected',
     'verify-unknown-error'
 ]

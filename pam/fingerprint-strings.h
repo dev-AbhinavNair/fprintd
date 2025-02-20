@@ -178,8 +178,13 @@ verify_result_str_to_msg (const char *result, bool is_swipe)
     return TR (N_("Your finger was not centered, try swiping your finger again"));
   if (strcmp (result, "verify-remove-and-retry") == 0)
     return TR (N_("Remove your finger, and try swiping your finger again"));
-  if (strcmp (result, "verify-swipe-too-fast") == 0)
-    return TR (N_("Swipe was too fast, try again"));
+  if (strcmp (result, "verify-too-fast") == 0)
+    {
+      if (is_swipe)
+        return TR (N_("Swipe was too fast, try again"));
+      else
+        return TR (N_("Finger scan was too fast, try again"));
+    }
 
   return NULL;
 }
