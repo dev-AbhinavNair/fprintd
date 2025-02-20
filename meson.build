@@ -6,7 +6,7 @@ project('fprintd', 'c',
         'warning_level=3',
         'c_std=gnu99',
     ],
-    meson_version: '>= 0.56.0')
+    meson_version: '>= 0.58.0')
 
 gnome = import('gnome')
 i18n = import('i18n')
@@ -135,7 +135,7 @@ systemd_dep = dependency('systemd', version: '>= 235', required: false)
 systemd_unit_dir = get_option('systemd_system_unit_dir')
 
 if systemd_unit_dir == '' and systemd_dep.found()
-    systemd_unit_dir = systemd_dep.get_pkgconfig_variable('systemdsystemunitdir')
+    systemd_unit_dir = systemd_dep.get_variable('systemdsystemunitdir')
 endif
 
 if get_option('systemd') and systemd_unit_dir == ''
@@ -148,10 +148,10 @@ dbus_interfaces_dir = ''
 
 if dbus_dep.found()
     if dbus_service_dir == ''
-        dbus_service_dir = dbus_dep.get_pkgconfig_variable('system_bus_services_dir')
+        dbus_service_dir = dbus_dep.get_variable('system_bus_services_dir')
     endif
-    dbus_interfaces_dir = dbus_dep.get_pkgconfig_variable('interfaces_dir')
-    dbus_data_dir = dbus_dep.get_pkgconfig_variable('datadir')
+    dbus_interfaces_dir = dbus_dep.get_variable('interfaces_dir')
+    dbus_data_dir = dbus_dep.get_variable('datadir')
 endif
 
 dbus_conf_dir = dbus_data_dir / 'dbus-1/system.d'
@@ -163,7 +163,7 @@ if dbus_interfaces_dir == ''
     dbus_interfaces_dir = datadir / 'dbus-1/interfaces'
 endif
 
-polkit_policy_directory = polkit_gobject_dep.get_pkgconfig_variable('policydir')
+polkit_policy_directory = polkit_gobject_dep.get_variable('policydir')
 
 # Tests dependencies
 pam_wrapper_dep = dependency('pam_wrapper', required: false)

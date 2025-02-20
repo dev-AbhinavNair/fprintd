@@ -119,7 +119,7 @@ add_test_setup('default_setup',
 )
 
 if not address_sanitizer and find_program('valgrind', required: false).found()
-    glib_share = glib_dep.get_pkgconfig_variable('prefix') / 'share' / glib_dep.name()
+    glib_share = glib_dep.get_variable('prefix') / 'share' / glib_dep.name()
     glib_suppressions = glib_share + '/valgrind/glib.supp'
     add_test_setup('valgrind',
         env: [
