@@ -66,6 +66,7 @@ VALID_ENROLL_STATUS = [
     'enroll-failed',
     'enroll-stage-passed',
     'enroll-retry-scan',
+    'enroll-too-fast',
     'enroll-swipe-too-short',
     'enroll-finger-not-centered',
     'enroll-remove-and-retry',

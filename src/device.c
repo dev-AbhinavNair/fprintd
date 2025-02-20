@@ -650,6 +650,9 @@ enroll_result_to_name (gboolean completed, gboolean enrolled, GError *error)
         case FP_DEVICE_RETRY_REMOVE_FINGER:
           return "enroll-remove-and-retry";
 
+        case FP_DEVICE_RETRY_TOO_FAST:
+          return "enroll-too-fast";
+
         default:
           return "enroll-retry-scan";
         }

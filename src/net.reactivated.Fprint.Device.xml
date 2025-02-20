@@ -239,6 +239,12 @@
 						</doc:definition>
 					</doc:item>
 					<doc:item>
+						<doc:term>enroll-too-fast</doc:term>
+						<doc:definition>
+							The user's swipe or touch was too short. The user should retry scanning their finger, the enrollment is still ongoing.
+						</doc:definition>
+					</doc:item>
+					<doc:item>
 						<doc:term>enroll-finger-not-centered</doc:term>
 						<doc:definition>
 							The user's finger was not centered on the reader. The user should retry scanning their finger, the enrollment is still ongoing.

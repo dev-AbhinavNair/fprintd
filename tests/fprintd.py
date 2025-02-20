@@ -2458,6 +2458,9 @@ class FPrintdVirtualDeviceEnrollTests(FPrintdVirtualDeviceBaseTest):
     def test_enroll_retry_too_short(self):
         self.assertEnrollRetry(FPrint.DeviceRetry.TOO_SHORT, 'enroll-swipe-too-short')
 
+    def test_enroll_retry_too_fast(self):
+        self.assertEnrollRetry(FPrint.DeviceRetry.TOO_FAST, 'enroll-too-fast')
+
     def test_enroll_retry_remove_finger(self):
         self.assertEnrollRetry(FPrint.DeviceRetry.REMOVE_FINGER, 'enroll-remove-and-retry')
 
