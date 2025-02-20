@@ -52,7 +52,7 @@ endif
 unittest_inspector = find_program('unittest_inspector.py')
 
 foreach pt: python_tests
-    r = run_command(unittest_inspector, pt.get('file'))
+    r = run_command(unittest_inspector, pt.get('file'), check: false)
     unit_tests = r.stdout().strip().split('\n')
     base_args = [ pt.get('file') ] + pt.get('extra_args', [])
     suite = pt.get('suite', [])

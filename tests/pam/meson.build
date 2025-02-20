@@ -18,11 +18,12 @@ endif
 
 foreach libname: preloaded_libs
     lib = run_command(meson.get_compiler('c'),
-        '-print-file-name=lib@0@.so'.format(libname)
+        '-print-file-name=lib@0@.so'.format(libname),
+        check: false,
     ).stdout().strip()
 
     # Support linker script files
-    if run_command('grep', '-qI', '^INPUT', files(lib)).returncode() == 0
+    if run_command('grep', '-qI', '^INPUT', files(lib), check: false).returncode() == 0
         out = run_command('cat', lib).stdout()
         lib = out.split('(')[1].split(')')[0].strip()
     endif
