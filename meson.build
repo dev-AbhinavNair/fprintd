@@ -165,29 +165,34 @@ endif
 
 polkit_policy_directory = polkit_gobject_dep.get_variable('policydir')
 
-# Tests dependencies
-pam_wrapper_dep = dependency('pam_wrapper', required: false)
-if get_option('pam') and not pam_wrapper_dep.found()
-    warning('Dependency "pam_wrapper" required by test suite not found')
-endif
-
 xmllint = find_program('xmllint', required: false)
 python3 = find_program('python3') # No meson without it!
-python3_test_modules = {
-    'cairo': true,
-    'dbus': true,
-    'dbusmock': true,
-    'gi': true,
-    'gi.repository.FPrint': true,
-    'pypamtest': get_option('pam'),
-}
-python3_available_modules = []
 
-foreach module, required : python3_test_modules
-    if required and run_command(python3, '-c', 'import @0@'.format(module), check: false).returncode() != 0
-        warning('Python3 module \'' + module + '\' required by test suite not found')
+# Tests dependencies
+if get_option('tests')
+    pam_wrapper_dep = dependency('pam_wrapper', required: false)
+    if get_option('pam') and not pam_wrapper_dep.found()
+        warning('Dependency "pam_wrapper" required by test suite not found')
     endif
-endforeach
+
+    python3_test_modules = {
+        'cairo': true,
+        'dbus': true,
+        'dbusmock': true,
+        'gi': true,
+        'gi.repository.FPrint': true,
+        'pypamtest': get_option('pam'),
+    }
+    python3_available_modules = []
+
+    foreach module, required : python3_test_modules
+        if required and run_command(python3, '-c', 'import @0@'.format(module), check: false).returncode() != 0
+            warning('Python3 module \'' + module + '\' required by test suite not found')
+        endif
+    endforeach
+endif
+
+address_sanitizer = get_option('b_sanitize') == 'address'
 
 cdata = configuration_data()
 cdata.set_quoted('GETTEXT_PACKAGE', meson.project_name())
@@ -211,7 +216,9 @@ endif
 if get_option('gtk_doc')
     subdir('doc')
 endif
-subdir('tests')
+if get_option('tests')
+    subdir('tests')
+endif
 subdir('po')
 
 output = []

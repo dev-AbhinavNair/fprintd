@@ -28,3 +28,7 @@ option('gtk_doc',
     type: 'boolean',
     value: false,
     description: 'Use gtk-doc to build documentation')
+option('tests',
+    type: 'boolean',
+    value: true,
+    description: 'Run tests')

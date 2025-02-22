@@ -16,8 +16,6 @@ python_tests = [
     # }
 ]
 
-address_sanitizer = get_option('b_sanitize') == 'address'
-
 tests = [
     'fprintd',
     'test_fprintd_utils',
