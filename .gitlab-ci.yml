@@ -12,6 +12,7 @@ variables:
   FDO_DISTRIBUTION_VERSION: rawhide
   FDO_UPSTREAM_REPO: "libfprint/$CI_PROJECT_NAME"
   FEDORA_IMAGE: "$CI_REGISTRY/libfprint/$CI_PROJECT_NAME/fedora/$FDO_DISTRIBUTION_VERSION:$FDO_DISTRIBUTION_TAG"
+  WEBLATE_TRANSLATIONS_SOURCE_BRANCH: weblate-translations-source
   DEPENDENCIES: dbus-glib-devel
                 gcc
                 gcovr
@@ -41,11 +42,15 @@ stages:
   - build
   - test
 
+.fprintd_build_preconditions_rules:
+  - if: $FPRINT_CRON_TASK == "BUILD_CI_IMAGES"
+    when: never
+  - if: $CI_COMMIT_BRANCH == $WEBLATE_TRANSLATIONS_SOURCE_BRANCH
+    when: never
+  - when: on_success
+
 .fprintd_build_preconditions:
-  rules:
-    - if: $FPRINT_CRON_TASK == "BUILD_CI_IMAGES"
-      when: never
-    - when: on_success
+  rules: !reference [.fprintd_build_preconditions_rules]
 
 .install_libfprint_dev:
   before_script:
@@ -84,6 +89,37 @@ build_dev:
     - meson setup _build --werror -Dgtk_doc=true
     - meson compile -C _build -v
     - meson install -C _build
+    - meson compile -C _build fprintd-pot -v
+  artifacts:
+    name: log
+    when: on_failure
+    paths:
+      - _build/meson-logs/*.txt
+
+update_potfile_dev:
+  extends:
+    - .fprintd_build_preconditions
+    - .install_libfprint_dev
+  stage: build
+  rules:
+    - if: '$CI_PROJECT_PATH != "libfprint/fprintd"'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH != "master"'
+      when: never
+    - !reference [.fprintd_build_preconditions_rules]
+  script:
+    - meson setup _build
+    - meson compile -C _build fprintd-pot -v
+    - git config --global user.email "${GITLAB_USER_EMAIL}"
+    - git config --global user.name "${GITLAB_USER_NAME}"
+    - git remote set-url --push origin
+      "https://gitlab-ci-token:${FPRINTD_GITLAB_PUSH_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
+    - if git diff --exit-code po/fprintd.pot; then echo exit 0; fi
+    - git add po/fprintd.pot
+    - 'git commit -m "po/fprintd.pot: Update via pipeline $CI_PIPELINE_ID"'
+    - git push origin HEAD:refs/heads/${WEBLATE_TRANSLATIONS_SOURCE_BRANCH} -f
   artifacts:
     name: log
     when: on_failure
