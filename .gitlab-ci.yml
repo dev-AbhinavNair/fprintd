@@ -42,9 +42,10 @@ stages:
   - test
 
 .fprintd_build_preconditions:
-  except:
-    variables:
-      - $FPRINT_CRON_TASK == "BUILD_CI_IMAGES"
+  rules:
+    - if: $FPRINT_CRON_TASK == "BUILD_CI_IMAGES"
+      when: never
+    - when: on_success
 
 .install_libfprint_dev:
   before_script:
