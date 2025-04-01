@@ -51,11 +51,9 @@ stages:
     # Make sure we don't build or link against the system libfprint
     - dnf remove -y libfprint-devel
     - git clone https://gitlab.freedesktop.org/libfprint/libfprint.git
-    - cd libfprint
-    - meson . _build --prefix=/usr -Ddrivers=virtual_image,virtual_device,virtual_device_storage -Ddoc=false
-    - ninja -C _build
-    - ninja -C _build install
-    - cd ..
+    - meson setup libfprint/_build libfprint --prefix=/usr -Ddrivers=virtual_image,virtual_device,virtual_device_storage -Ddoc=false
+    - meson compile -C libfprint/_build
+    - meson install -C libfprint/_build
     # So we don't get error about this libfprint file
     - echo "libfprint/demo/gtk-libfprint-test.ui" >> po/POTFILES.skip
 
@@ -73,8 +71,8 @@ build_stable:
   allow_failure: true
   script:
     - meson _build
-    - ninja -C _build -v
-    - ninja -C _build -v install
+    - meson compile -C _build -v
+    - meson install -C _build
 
 build_dev:
   extends:
@@ -82,9 +80,9 @@ build_dev:
     - .install_libfprint_dev
   stage: build
   script:
-    - meson _build --werror -Dgtk_doc=true
-    - ninja -C _build -v
-    - ninja -C _build -v install
+    - meson setup _build --werror -Dgtk_doc=true
+    - meson compile -C _build -v
+    - meson install -C _build
   artifacts:
     name: log
     when: on_failure
@@ -97,9 +95,9 @@ test_dev:
     - .install_libfprint_dev
   stage: test
   script:
-    - meson _build -Db_coverage=true
+    - meson setup _build -Db_coverage=true
     - meson test -C _build --print-errorlogs --no-stdsplit --timeout-multiplier 3
-    - ninja -C _build coverage || true
+    - meson compile -C _build coverage || true
     - cat _build/meson-logs/coverage.txt || true
   artifacts:
     expose_as: 'Coverage Report'
@@ -114,7 +112,7 @@ test_dev_with_sanitizer:
     - .install_libfprint_dev
   stage: test
   script:
-    - meson _build -Db_sanitize=address
+    - meson setup _build -Db_sanitize=address
     - meson test -C _build --print-errorlogs --no-stdsplit --timeout-multiplier 5
   artifacts:
     name: meson-logs
