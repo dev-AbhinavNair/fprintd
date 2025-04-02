@@ -235,12 +235,13 @@ class FPrintdTest(dbusmock.DBusTestCase):
 
         argv = [self.paths['daemon'], '-t']
         valgrind = os.getenv('VALGRIND')
-        if valgrind is not None:
+        self.valgrind = valgrind is not None
+        if self.valgrind:
             argv.insert(0, 'valgrind')
             argv.insert(1, '--leak-check=full')
             if os.path.exists(valgrind):
                 argv.insert(2, '--suppressions=%s' % valgrind)
-            self.valgrind = True
+
         self.kill_daemon = False
         self.daemon_log = OutputChecker()
         self.addCleanup(self.daemon_log.force_close)
@@ -311,7 +312,7 @@ class FPrintdTest(dbusmock.DBusTestCase):
                 else:
                     raise(e)
 
-            self.daemon_log.assert_closed()
+            self.daemon_log.assert_closed(timeout=5 if self.valgrind else 3)
 
             if not self.kill_daemon:
                 self.assertLess(self.daemon.returncode, 128)
@@ -3188,12 +3189,13 @@ class FPrintdUtilsTest(FPrintdVirtualStorageDeviceBaseTest):
 
         argv = [self.utils[name]] + args
         valgrind = os.getenv('VALGRIND')
-        if valgrind is not None:
+        self.valgrind = valgrind is not None
+        if self.valgrind:
             argv.insert(0, 'valgrind')
             argv.insert(1, '--leak-check=full')
             if os.path.exists(valgrind):
                 argv.insert(2, '--suppressions=%s' % valgrind)
-            self.valgrind = True
+
         output = OutputChecker()
         self.utils_proc[name] = subprocess.Popen(argv,
                                                  env=env,
