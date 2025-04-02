@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fprintd\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-02 10:58+0100\n"
+"POT-Creation-Date: 2025-04-02 09:49+0000\n"
 "PO-Revision-Date: 2017-09-23 20:04+0000\n"
 "Last-Translator: Cédric Valmary <cvalmary@yahoo.fr>\n"
 "Language-Team: Occitan (post 1500) (http://www.transifex.com/freedesktop/"
@@ -51,12 +51,12 @@ msgstr ""
 "De permissions son necessàrias per introduire de novèlas emprenchas "
 "digitalas per d'autres utilizaires."
 
-#: src/device.c:783
+#: src/device.c:799
 #, c-format
 msgid "Device was not claimed before use"
 msgstr "Lo periferic es pas estat reservat abans utilizacion"
 
-#: src/device.c:792
+#: src/device.c:808
 #, c-format
 msgid "Device already in use by another user"
 msgstr "Lo periferic es ja utilizat per un autre utilizaire"
@@ -259,35 +259,71 @@ msgstr "Fasètz lisar vòstre auricular drech sul lector d'emprenchas"
 msgid "Swipe your right little finger across %s"
 msgstr "Fasètz lisar vòstre auricular drech sus %s"
 
-#: pam/fingerprint-strings.h:171 pam/fingerprint-strings.h:199
+#: pam/fingerprint-strings.h:170 pam/fingerprint-strings.h:216
 msgid "Place your finger on the reader again"
 msgstr "Plaçatz tornamai vòstre det sul lector"
 
-#: pam/fingerprint-strings.h:173 pam/fingerprint-strings.h:201
+#: pam/fingerprint-strings.h:172 pam/fingerprint-strings.h:218
 msgid "Swipe your finger again"
 msgstr "Lisatz tornamai vòstre det"
 
-#: pam/fingerprint-strings.h:176 pam/fingerprint-strings.h:204
+#: pam/fingerprint-strings.h:175 pam/fingerprint-strings.h:221
 msgid "Swipe was too short, try again"
 msgstr "Lo lisament èra tròp brèu, ensajatz un còp de mai"
 
-#: pam/fingerprint-strings.h:178 pam/fingerprint-strings.h:206
+#: pam/fingerprint-strings.h:179 pam/fingerprint-strings.h:225
 msgid "Your finger was not centered, try swiping your finger again"
 msgstr "Vòstre det èra pas centrat, ensajatz de lo lisar un còp de mai"
 
-#: pam/fingerprint-strings.h:180 pam/fingerprint-strings.h:208
+#: pam/fingerprint-strings.h:181 pam/fingerprint-strings.h:227
+#, fuzzy
+#| msgid "Your finger was not centered, try swiping your finger again"
+msgid "Your finger was not centered, try touching the sensor again"
+msgstr "Vòstre det èra pas centrat, ensajatz de lo lisar un còp de mai"
+
+#: pam/fingerprint-strings.h:186 pam/fingerprint-strings.h:232
 msgid "Remove your finger, and try swiping your finger again"
 msgstr "Levatz vòstre det del lector e ensajatz de lo lisar un còp de mai"
 
-#: pam/pam_fprintd.c:537
+#: pam/fingerprint-strings.h:188 pam/fingerprint-strings.h:234
+#, fuzzy
+#| msgid "Remove your finger, and try swiping your finger again"
+msgid "Remove your finger, and try touching the sensor again"
+msgstr "Levatz vòstre det del lector e ensajatz de lo lisar un còp de mai"
+
+#: pam/fingerprint-strings.h:193 pam/fingerprint-strings.h:239
+#, fuzzy
+#| msgid "Swipe was too short, try again"
+msgid "Swipe was too fast, try again"
+msgstr "Lo lisament èra tròp brèu, ensajatz un còp de mai"
+
+#: pam/fingerprint-strings.h:195 pam/fingerprint-strings.h:241
+#, fuzzy
+#| msgid "Swipe was too short, try again"
+msgid "Finger scan was too fast, try again"
+msgstr "Lo lisament èra tròp brèu, ensajatz un còp de mai"
+
+#: pam/fingerprint-strings.h:199
+msgid "An unexpected error happened during fingerprint verification"
+msgstr ""
+
+#: pam/fingerprint-strings.h:244
+msgid "The fingerprint has been already enrolled. Try using another finger."
+msgstr ""
+
+#: pam/fingerprint-strings.h:248
+msgid "An unexpected error happened during fingerprint enrollment"
+msgstr ""
+
+#: pam/pam_fprintd.c:584
 msgid "Verification timed out"
 msgstr ""
 
-#: pam/pam_fprintd.c:542
+#: pam/pam_fprintd.c:589
 #, fuzzy
 msgid "Failed to match fingerprint"
 msgstr "Verificra una emprencha digitala"
 
-#: pam/pam_fprintd.c:580
+#: pam/pam_fprintd.c:627
 msgid "An unknown error occurred"
 msgstr ""

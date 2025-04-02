@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fprintd\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-02 10:58+0100\n"
+"POT-Creation-Date: 2025-04-02 09:49+0000\n"
 "PO-Revision-Date: 2017-09-19 09:46+0000\n"
 "Last-Translator: thanos <tomtryf@gmail.com>\n"
 "Language-Team: Greek (http://www.transifex.com/freedesktop/fprintd/language/"
@@ -51,12 +51,12 @@ msgstr ""
 "Απαιτούνται προνόμια για την καταγραφή νέων δακτυλικών αποτυπωμάτων για "
 "άλλους χρήστες."
 
-#: src/device.c:783
+#: src/device.c:799
 #, c-format
 msgid "Device was not claimed before use"
 msgstr "Η συσκευή δεν ζητήθηκε πριν από τη χρήση"
 
-#: src/device.c:792
+#: src/device.c:808
 #, c-format
 msgid "Device already in use by another user"
 msgstr "Η συσκευή χρησιμοποιείται ήδη από έναν άλλο χρήστη"
@@ -284,37 +284,75 @@ msgstr ""
 msgid "Swipe your right little finger across %s"
 msgstr "Περάστε το δεξιό σας μικρό δάκτυλο πάνω από το %s"
 
-#: pam/fingerprint-strings.h:171 pam/fingerprint-strings.h:199
+#: pam/fingerprint-strings.h:170 pam/fingerprint-strings.h:216
 msgid "Place your finger on the reader again"
 msgstr "Τοποθετήστε ξανά το δάκτυλό σας στον αναγνώστη"
 
-#: pam/fingerprint-strings.h:173 pam/fingerprint-strings.h:201
+#: pam/fingerprint-strings.h:172 pam/fingerprint-strings.h:218
 msgid "Swipe your finger again"
 msgstr "Περάστε ξανά το δάκτυλο σας"
 
-#: pam/fingerprint-strings.h:176 pam/fingerprint-strings.h:204
+#: pam/fingerprint-strings.h:175 pam/fingerprint-strings.h:221
 msgid "Swipe was too short, try again"
 msgstr "Το πέρασμα ήταν πολύ σύντομο, προσπαθήστε ξανά"
 
-#: pam/fingerprint-strings.h:178 pam/fingerprint-strings.h:206
+#: pam/fingerprint-strings.h:179 pam/fingerprint-strings.h:225
 msgid "Your finger was not centered, try swiping your finger again"
 msgstr ""
 "Το δάκτυλο σας δεν ήταν κεντραρισμένο, προσπαθήστε να περάσετε ξανά το "
 "δάκτυλο σας"
 
-#: pam/fingerprint-strings.h:180 pam/fingerprint-strings.h:208
+#: pam/fingerprint-strings.h:181 pam/fingerprint-strings.h:227
+#, fuzzy
+#| msgid "Your finger was not centered, try swiping your finger again"
+msgid "Your finger was not centered, try touching the sensor again"
+msgstr ""
+"Το δάκτυλο σας δεν ήταν κεντραρισμένο, προσπαθήστε να περάσετε ξανά το "
+"δάκτυλο σας"
+
+#: pam/fingerprint-strings.h:186 pam/fingerprint-strings.h:232
 msgid "Remove your finger, and try swiping your finger again"
 msgstr "Απομακρύνετε το δάκτυλο σας και προσπαθήστε να το ξαναπεράσετε"
 
-#: pam/pam_fprintd.c:537
+#: pam/fingerprint-strings.h:188 pam/fingerprint-strings.h:234
+#, fuzzy
+#| msgid "Remove your finger, and try swiping your finger again"
+msgid "Remove your finger, and try touching the sensor again"
+msgstr "Απομακρύνετε το δάκτυλο σας και προσπαθήστε να το ξαναπεράσετε"
+
+#: pam/fingerprint-strings.h:193 pam/fingerprint-strings.h:239
+#, fuzzy
+#| msgid "Swipe was too short, try again"
+msgid "Swipe was too fast, try again"
+msgstr "Το πέρασμα ήταν πολύ σύντομο, προσπαθήστε ξανά"
+
+#: pam/fingerprint-strings.h:195 pam/fingerprint-strings.h:241
+#, fuzzy
+#| msgid "Swipe was too short, try again"
+msgid "Finger scan was too fast, try again"
+msgstr "Το πέρασμα ήταν πολύ σύντομο, προσπαθήστε ξανά"
+
+#: pam/fingerprint-strings.h:199
+msgid "An unexpected error happened during fingerprint verification"
+msgstr ""
+
+#: pam/fingerprint-strings.h:244
+msgid "The fingerprint has been already enrolled. Try using another finger."
+msgstr ""
+
+#: pam/fingerprint-strings.h:248
+msgid "An unexpected error happened during fingerprint enrollment"
+msgstr ""
+
+#: pam/pam_fprintd.c:584
 msgid "Verification timed out"
 msgstr ""
 
-#: pam/pam_fprintd.c:542
+#: pam/pam_fprintd.c:589
 #, fuzzy
 msgid "Failed to match fingerprint"
 msgstr "Επιβεβαιώστε ένα δακτυλικό αποτύπωμα"
 
-#: pam/pam_fprintd.c:580
+#: pam/pam_fprintd.c:627
 msgid "An unknown error occurred"
 msgstr ""

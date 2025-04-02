@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fprintd\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-02 10:58+0100\n"
+"POT-Creation-Date: 2025-04-02 09:49+0000\n"
 "PO-Revision-Date: 2024-08-30 02:37+0000\n"
 "Last-Translator: Shihfu Juan <baby20030720@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://translate.fedoraproject.org/"
@@ -45,12 +45,12 @@ msgstr "選取使用者以管理其指紋"
 msgid "Privileges are required to manage fingerprints for other users."
 msgstr "需要更高的權限來管理其他使用者的指紋。"
 
-#: src/device.c:783
+#: src/device.c:799
 #, c-format
 msgid "Device was not claimed before use"
 msgstr "在使用前裝置未提出要求"
 
-#: src/device.c:792
+#: src/device.c:808
 #, c-format
 msgid "Device already in use by another user"
 msgstr "裝置正被其他使用者使用"
@@ -253,34 +253,70 @@ msgstr "請將您的右小指抹過指紋讀取器"
 msgid "Swipe your right little finger across %s"
 msgstr "請將您的右小指抹過 %s"
 
-#: pam/fingerprint-strings.h:171 pam/fingerprint-strings.h:199
+#: pam/fingerprint-strings.h:170 pam/fingerprint-strings.h:216
 msgid "Place your finger on the reader again"
 msgstr "請再次將您的手指放在讀取器上"
 
-#: pam/fingerprint-strings.h:173 pam/fingerprint-strings.h:201
+#: pam/fingerprint-strings.h:172 pam/fingerprint-strings.h:218
 msgid "Swipe your finger again"
 msgstr "再次抹過您的手指"
 
-#: pam/fingerprint-strings.h:176 pam/fingerprint-strings.h:204
+#: pam/fingerprint-strings.h:175 pam/fingerprint-strings.h:221
 msgid "Swipe was too short, try again"
 msgstr "抹動長度過短，請重試"
 
-#: pam/fingerprint-strings.h:178 pam/fingerprint-strings.h:206
+#: pam/fingerprint-strings.h:179 pam/fingerprint-strings.h:225
 msgid "Your finger was not centered, try swiping your finger again"
 msgstr "您的手指並非位於中央，請再次嘗試抹過您的手指"
 
-#: pam/fingerprint-strings.h:180 pam/fingerprint-strings.h:208
+#: pam/fingerprint-strings.h:181 pam/fingerprint-strings.h:227
+#, fuzzy
+#| msgid "Your finger was not centered, try swiping your finger again"
+msgid "Your finger was not centered, try touching the sensor again"
+msgstr "您的手指並非位於中央，請再次嘗試抹過您的手指"
+
+#: pam/fingerprint-strings.h:186 pam/fingerprint-strings.h:232
 msgid "Remove your finger, and try swiping your finger again"
 msgstr "請移開您的手指，並再次嘗試抹過您的手指"
 
-#: pam/pam_fprintd.c:537
+#: pam/fingerprint-strings.h:188 pam/fingerprint-strings.h:234
+#, fuzzy
+#| msgid "Remove your finger, and try swiping your finger again"
+msgid "Remove your finger, and try touching the sensor again"
+msgstr "請移開您的手指，並再次嘗試抹過您的手指"
+
+#: pam/fingerprint-strings.h:193 pam/fingerprint-strings.h:239
+#, fuzzy
+#| msgid "Swipe was too short, try again"
+msgid "Swipe was too fast, try again"
+msgstr "抹動長度過短，請重試"
+
+#: pam/fingerprint-strings.h:195 pam/fingerprint-strings.h:241
+#, fuzzy
+#| msgid "Swipe was too short, try again"
+msgid "Finger scan was too fast, try again"
+msgstr "抹動長度過短，請重試"
+
+#: pam/fingerprint-strings.h:199
+msgid "An unexpected error happened during fingerprint verification"
+msgstr ""
+
+#: pam/fingerprint-strings.h:244
+msgid "The fingerprint has been already enrolled. Try using another finger."
+msgstr ""
+
+#: pam/fingerprint-strings.h:248
+msgid "An unexpected error happened during fingerprint enrollment"
+msgstr ""
+
+#: pam/pam_fprintd.c:584
 msgid "Verification timed out"
 msgstr "驗證逾時"
 
-#: pam/pam_fprintd.c:542
+#: pam/pam_fprintd.c:589
 msgid "Failed to match fingerprint"
 msgstr "指紋不匹配"
 
-#: pam/pam_fprintd.c:580
+#: pam/pam_fprintd.c:627
 msgid "An unknown error occurred"
 msgstr "遭遇未知錯誤"

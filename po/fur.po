@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fprintd\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-02 10:58+0100\n"
+"POT-Creation-Date: 2025-04-02 09:49+0000\n"
 "PO-Revision-Date: 2023-02-23 13:20+0000\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <https://translate.fedoraproject.org/projects/"
@@ -34,7 +34,8 @@ msgstr "Regjistre o elimine impronts digjitâi"
 
 #: data/net.reactivated.fprint.device.policy.in:24
 msgid "Privileges are required to enroll or delete fingerprints."
-msgstr "I privileçs a son necessaris par regjistrâ o eliminâ impronts digjitâi."
+msgstr ""
+"I privileçs a son necessaris par regjistrâ o eliminâ impronts digjitâi."
 
 #: data/net.reactivated.fprint.device.policy.in:33
 msgid "Select a user to manage fingerprints for"
@@ -46,12 +47,12 @@ msgstr ""
 "I privileçs a son necessaris par gjestî i impronts digjitâi par altris "
 "utents."
 
-#: src/device.c:783
+#: src/device.c:799
 #, c-format
 msgid "Device was not claimed before use"
 msgstr "Il dispositîf nol è stât rivendicât prime jessi doprât"
 
-#: src/device.c:792
+#: src/device.c:808
 #, c-format
 msgid "Device already in use by another user"
 msgstr "Il dispositîf al è za doprât di un altri utent"
@@ -254,34 +255,70 @@ msgstr "Fâs cori il dêt piçul de man drete su letôr di impronts digjitâi"
 msgid "Swipe your right little finger across %s"
 msgstr "Fâs cori il dêt piçul de man drete su %s"
 
-#: pam/fingerprint-strings.h:171 pam/fingerprint-strings.h:199
+#: pam/fingerprint-strings.h:170 pam/fingerprint-strings.h:216
 msgid "Place your finger on the reader again"
 msgstr "Torne met il dêt sul letôr"
 
-#: pam/fingerprint-strings.h:173 pam/fingerprint-strings.h:201
+#: pam/fingerprint-strings.h:172 pam/fingerprint-strings.h:218
 msgid "Swipe your finger again"
 msgstr "Torne fâs cori il dêt"
 
-#: pam/fingerprint-strings.h:176 pam/fingerprint-strings.h:204
+#: pam/fingerprint-strings.h:175 pam/fingerprint-strings.h:221
 msgid "Swipe was too short, try again"
 msgstr "La passade e jere masse curte, torne prove"
 
-#: pam/fingerprint-strings.h:178 pam/fingerprint-strings.h:206
+#: pam/fingerprint-strings.h:179 pam/fingerprint-strings.h:225
 msgid "Your finger was not centered, try swiping your finger again"
 msgstr "Il dêt nol jere centrât, prove a tornâ a fâ cori il dêt di gnûf"
 
-#: pam/fingerprint-strings.h:180 pam/fingerprint-strings.h:208
+#: pam/fingerprint-strings.h:181 pam/fingerprint-strings.h:227
+#, fuzzy
+#| msgid "Your finger was not centered, try swiping your finger again"
+msgid "Your finger was not centered, try touching the sensor again"
+msgstr "Il dêt nol jere centrât, prove a tornâ a fâ cori il dêt di gnûf"
+
+#: pam/fingerprint-strings.h:186 pam/fingerprint-strings.h:232
 msgid "Remove your finger, and try swiping your finger again"
 msgstr "Gjave il dêt e prove a tornâ a fâ cori il dêt di gnûf"
 
-#: pam/pam_fprintd.c:537
+#: pam/fingerprint-strings.h:188 pam/fingerprint-strings.h:234
+#, fuzzy
+#| msgid "Remove your finger, and try swiping your finger again"
+msgid "Remove your finger, and try touching the sensor again"
+msgstr "Gjave il dêt e prove a tornâ a fâ cori il dêt di gnûf"
+
+#: pam/fingerprint-strings.h:193 pam/fingerprint-strings.h:239
+#, fuzzy
+#| msgid "Swipe was too short, try again"
+msgid "Swipe was too fast, try again"
+msgstr "La passade e jere masse curte, torne prove"
+
+#: pam/fingerprint-strings.h:195 pam/fingerprint-strings.h:241
+#, fuzzy
+#| msgid "Swipe was too short, try again"
+msgid "Finger scan was too fast, try again"
+msgstr "La passade e jere masse curte, torne prove"
+
+#: pam/fingerprint-strings.h:199
+msgid "An unexpected error happened during fingerprint verification"
+msgstr ""
+
+#: pam/fingerprint-strings.h:244
+msgid "The fingerprint has been already enrolled. Try using another finger."
+msgstr ""
+
+#: pam/fingerprint-strings.h:248
+msgid "An unexpected error happened during fingerprint enrollment"
+msgstr ""
+
+#: pam/pam_fprintd.c:584
 msgid "Verification timed out"
 msgstr "Verifiche scjadude"
 
-#: pam/pam_fprintd.c:542
+#: pam/pam_fprintd.c:589
 msgid "Failed to match fingerprint"
 msgstr "Nol è stât pussibil imbinâ l'impront digjitâl"
 
-#: pam/pam_fprintd.c:580
+#: pam/pam_fprintd.c:627
 msgid "An unknown error occurred"
 msgstr "Al è vignût fûr un erôr no cognossût"
