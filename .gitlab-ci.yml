@@ -12,7 +12,6 @@ variables:
   FDO_DISTRIBUTION_VERSION: rawhide
   FDO_UPSTREAM_REPO: "libfprint/$CI_PROJECT_NAME"
   FEDORA_IMAGE: "$CI_REGISTRY/libfprint/$CI_PROJECT_NAME/fedora/$FDO_DISTRIBUTION_VERSION:$FDO_DISTRIBUTION_TAG"
-  WEBLATE_TRANSLATIONS_SOURCE_BRANCH: weblate-translations-source
   DEPENDENCIES: dbus-glib-devel
                 gcc
                 gcovr
@@ -46,8 +45,6 @@ stages:
 
 .fprintd_build_preconditions_rules:
   - if: $FPRINT_CRON_TASK == "BUILD_CI_IMAGES"
-    when: never
-  - if: $CI_COMMIT_BRANCH == $WEBLATE_TRANSLATIONS_SOURCE_BRANCH
     when: never
   - when: on_success
 
@@ -121,7 +118,7 @@ update_potfile_dev:
     - if git diff --exit-code --ignore-matching-lines=POT-Creation-Date po/fprintd.pot; then echo exit; fi
     - git add po/fprintd.pot
     - 'git commit -m "po/fprintd.pot: Update via pipeline $CI_PIPELINE_ID"'
-    - git push origin HEAD:refs/heads/${WEBLATE_TRANSLATIONS_SOURCE_BRANCH} -f
+    - git push origin HEAD:refs/heads/master -o ci.skip
   artifacts:
     name: log
     when: on_failure
