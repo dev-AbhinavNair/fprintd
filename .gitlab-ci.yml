@@ -115,7 +115,7 @@ update_potfile_dev:
     - git config --global user.name "${GITLAB_USER_NAME}"
     - git remote set-url --push origin
       "https://gitlab-ci-token:${FPRINTD_GITLAB_PUSH_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
-    - if git diff --exit-code --ignore-matching-lines=POT-Creation-Date po/fprintd.pot; then echo exit; fi
+    - if git diff --exit-code --ignore-matching-lines=POT-Creation-Date po/fprintd.pot; then exit 0; fi
     - git add po/fprintd.pot
     - 'git commit -m "po/fprintd.pot: Update via pipeline $CI_PIPELINE_ID"'
     - git push origin HEAD:refs/heads/master -o ci.skip
