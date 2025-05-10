@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: fprintd\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-20 20:16+0000\n"
-"PO-Revision-Date: 2025-04-02 05:25+0000\n"
+"PO-Revision-Date: 2025-04-28 08:56+0000\n"
 "Last-Translator: hsu zangmen <chzang55@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://translate.fedoraproject.org/"
 "projects/fprintd/fprintd/zh_TW/>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.4\n"
+"X-Generator: Weblate 5.11\n"
 
 #: data/net.reactivated.fprint.device.policy.in:13
 msgid "Verify a fingerprint"
@@ -292,7 +292,7 @@ msgstr "手指抹動掃描太快，請再重試"
 
 #: pam/fingerprint-strings.h:199
 msgid "An unexpected error happened during fingerprint verification"
-msgstr ""
+msgstr "進行指紋驗證時發生了意外錯誤"
 
 #: pam/fingerprint-strings.h:199
 msgid "An unexpected error happened during finger verification"
@@ -304,7 +304,7 @@ msgstr "指紋已登記。 請嘗試使用其他手指。"
 
 #: pam/fingerprint-strings.h:248
 msgid "An unexpected error happened during fingerprint enrollment"
-msgstr ""
+msgstr "進行指紋註冊的過程中發生了意外錯誤"
 
 #: pam/fingerprint-strings.h:248
 msgid "An unexpected error happened during finger enrollment"
