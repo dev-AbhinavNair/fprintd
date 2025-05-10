@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: fprintd\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-01 16:52+0200\n"
-"PO-Revision-Date: 2025-04-01 18:24+0000\n"
+"PO-Revision-Date: 2025-04-03 13:47+0000\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <https://translate.fedoraproject.org/projects/"
 "fprintd/fprintd/ka/>\n"
@@ -293,7 +293,7 @@ msgstr "თითი სკანირება ძალიან სწრა
 
 #: pam/fingerprint-strings.h:199
 msgid "An unexpected error happened during fingerprint verification"
-msgstr ""
+msgstr "მოულოდნელი სეცდომა თითის ანაბეჭდის გადამოწმებისას"
 
 #: pam/fingerprint-strings.h:199
 msgid "An unexpected error happened during finger verification"
@@ -305,7 +305,7 @@ msgstr "ანაბეჭდი უკვე ჩაწერილია. ს�
 
 #: pam/fingerprint-strings.h:248
 msgid "An unexpected error happened during fingerprint enrollment"
-msgstr ""
+msgstr "მოულოდნელი შეცდომა თითის ანაბეჭდის დამატებისას"
 
 #: pam/fingerprint-strings.h:248
 msgid "An unexpected error happened during finger enrollment"
