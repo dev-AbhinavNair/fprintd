@@ -6,13 +6,14 @@
 # Yuri Kozlov <yuray@komyakino.ru>, 2011, 2012
 # D P <dpokrasko@gmail.com>, 2021.
 # Sergey A. <sw@atrus.ru>, 2022.
+# "Sergey A." <Ser82-png@yandex.ru>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: fprintd\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-02 09:49+0000\n"
-"PO-Revision-Date: 2022-05-10 07:54+0000\n"
-"Last-Translator: Sergey A. <sw@atrus.ru>\n"
+"PO-Revision-Date: 2025-04-02 16:51+0000\n"
+"Last-Translator: \"Sergey A.\" <Ser82-png@yandex.ru>\n"
 "Language-Team: Russian <https://translate.fedoraproject.org/projects/fprintd/"
 "fprintd/ru/>\n"
 "Language: ru\n"
@@ -20,9 +21,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
-"(n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 4.12.1\n"
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
+"n%100>=11 && n%100<=14)? 2 : 3);\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #: data/net.reactivated.fprint.device.policy.in:13
 msgid "Verify a fingerprint"
@@ -277,44 +278,38 @@ msgid "Your finger was not centered, try swiping your finger again"
 msgstr "Ваш палец находился не по центру, попробуйте провести ещё раз"
 
 #: pam/fingerprint-strings.h:181 pam/fingerprint-strings.h:227
-#, fuzzy
-#| msgid "Your finger was not centered, try swiping your finger again"
 msgid "Your finger was not centered, try touching the sensor again"
-msgstr "Ваш палец находился не по центру, попробуйте провести ещё раз"
+msgstr ""
+"Ваш палец находился не по центру, попробуйте прикоснуться к датчику ещё раз"
 
 #: pam/fingerprint-strings.h:186 pam/fingerprint-strings.h:232
 msgid "Remove your finger, and try swiping your finger again"
 msgstr "Уберите палец и попробуйте провести ещё раз"
 
 #: pam/fingerprint-strings.h:188 pam/fingerprint-strings.h:234
-#, fuzzy
-#| msgid "Remove your finger, and try swiping your finger again"
 msgid "Remove your finger, and try touching the sensor again"
-msgstr "Уберите палец и попробуйте провести ещё раз"
+msgstr "Уберите палец и попробуйте прикоснуться к датчику ещё раз"
 
 #: pam/fingerprint-strings.h:193 pam/fingerprint-strings.h:239
-#, fuzzy
-#| msgid "Swipe was too short, try again"
 msgid "Swipe was too fast, try again"
-msgstr "Вы провели пальцем слишком маленький отрезок, попробуйте ещё раз"
+msgstr "Вы провели пальцем слишком быстро, попробуйте ещё раз"
 
 #: pam/fingerprint-strings.h:195 pam/fingerprint-strings.h:241
-#, fuzzy
-#| msgid "Swipe was too short, try again"
 msgid "Finger scan was too fast, try again"
-msgstr "Вы провели пальцем слишком маленький отрезок, попробуйте ещё раз"
+msgstr "Сканирование пальца было слишком быстрым, попробуйте ещё раз"
 
 #: pam/fingerprint-strings.h:199
 msgid "An unexpected error happened during fingerprint verification"
-msgstr ""
+msgstr "Во время проверки отпечатка пальца произошла непредвиденная ошибка"
 
 #: pam/fingerprint-strings.h:244
 msgid "The fingerprint has been already enrolled. Try using another finger."
 msgstr ""
+"Отпечаток пальца уже зарегистрирован. Попробуйте использовать другой палец."
 
 #: pam/fingerprint-strings.h:248
 msgid "An unexpected error happened during fingerprint enrollment"
-msgstr ""
+msgstr "Во время регистрации отпечатка пальца произошла непредвиденная ошибка"
 
 #: pam/pam_fprintd.c:584
 msgid "Verification timed out"
