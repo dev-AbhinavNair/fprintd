@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: fprintd\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-20 20:16+0000\n"
-"PO-Revision-Date: 2025-04-02 09:34+0000\n"
+"PO-Revision-Date: 2025-04-03 02:03+0000\n"
 "Last-Translator: Luna Jernberg <bittin@reimu.nl>\n"
 "Language-Team: Swedish <https://translate.fedoraproject.org/projects/fprintd/"
 "fprintd/sv/>\n"
@@ -291,7 +291,7 @@ msgstr "Fingerskanningen gick för snabbt, försök igen"
 
 #: pam/fingerprint-strings.h:199
 msgid "An unexpected error happened during fingerprint verification"
-msgstr ""
+msgstr "Ett oväntat fel inträffade under fingeravtrycksverifieringen"
 
 #: pam/fingerprint-strings.h:199
 msgid "An unexpected error happened during finger verification"
@@ -303,7 +303,7 @@ msgstr "Fingeravtrycket har redan registrerats. Försök med ett annat finger."
 
 #: pam/fingerprint-strings.h:248
 msgid "An unexpected error happened during fingerprint enrollment"
-msgstr ""
+msgstr "Ett oväntat fel inträffade under fingeravtrycksregistreringen"
 
 #: pam/fingerprint-strings.h:248
 msgid "An unexpected error happened during finger enrollment"
