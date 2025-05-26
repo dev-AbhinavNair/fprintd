@@ -764,7 +764,12 @@ do_auth (pam_handle_t *pamh, const char *username)
   pf_autoptr (sd_bus) bus = NULL;
   pf_autoptr (sd_bus_slot) name_owner_changed_slot = NULL;
 
-  data = calloc (1, sizeof (verify_data));
+  if (!(data = calloc (1, sizeof (verify_data))))
+    {
+      pam_syslog (pamh, LOG_ERR, "Error allocating memory: %d", errno);
+      return PAM_SYSTEM_ERR;
+    }
+
   data->max_tries = max_tries;
   data->pamh = pamh;
 
