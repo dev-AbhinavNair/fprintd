@@ -32,3 +32,7 @@ option('tests',
     type: 'boolean',
     value: true,
     description: 'Run tests')
+option('installed-tests',
+    type: 'boolean',
+    value: false,
+    description: 'Install test programs')

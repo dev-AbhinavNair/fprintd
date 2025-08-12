@@ -132,3 +132,34 @@ if not address_sanitizer and find_program('valgrind', required: false).found()
     )
 endif
 
+if get_option('installed-tests')
+    installed_tests_dir = fprintd_installdir / 'installed-tests' / 'fprintd'
+
+    install_subdir('dbusmock',
+        install_dir: installed_tests_dir,
+    )
+
+    install_subdir('pam',
+        install_dir: installed_tests_dir,
+    )
+
+    install_subdir('prints',
+        install_dir: installed_tests_dir,
+    )
+
+    install_data([
+            'fprintd.py',
+            'output_checker.py',
+            'test_fprintd_utils.py',
+            'unittest_inspector.py',
+        ],
+        install_dir: installed_tests_dir,
+        install_mode: 'rwxr-xr-x',
+    )
+    install_data([
+            'output_checker.py',
+        ],
+        install_dir: installed_tests_dir,
+    )
+endif
+
