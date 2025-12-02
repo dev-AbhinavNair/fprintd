@@ -5,13 +5,14 @@
 # Translators:
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2012
 # Acs Zoltan <acszoltan111@gmail.com>, 2022.
+# Nimrod Turi <nimrodturi@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: fprintd\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-02 09:49+0000\n"
-"PO-Revision-Date: 2022-08-16 11:19+0000\n"
-"Last-Translator: Acs Zoltan <acszoltan111@gmail.com>\n"
+"PO-Revision-Date: 2025-12-02 22:10+0000\n"
+"Last-Translator: Nimrod Turi <nimrodturi@gmail.com>\n"
 "Language-Team: Hungarian <https://translate.fedoraproject.org/projects/"
 "fprintd/fprintd/hu/>\n"
 "Language: hu\n"
@@ -19,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.13\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #: data/net.reactivated.fprint.device.policy.in:13
 msgid "Verify a fingerprint"
@@ -301,15 +302,17 @@ msgstr "A lehúzás túl gyors volt, próbálja újra"
 
 #: pam/fingerprint-strings.h:199
 msgid "An unexpected error happened during fingerprint verification"
-msgstr ""
+msgstr "Egy váratlan hiba adódott az ujjlenyomat ellenőrzése közben"
 
 #: pam/fingerprint-strings.h:244
 msgid "The fingerprint has been already enrolled. Try using another finger."
 msgstr ""
+"Ezt az ujjlenyomatot már regisztrálták. Próbáljon meg egy másik "
+"ujjlenyomatot."
 
 #: pam/fingerprint-strings.h:248
 msgid "An unexpected error happened during fingerprint enrollment"
-msgstr ""
+msgstr "Egy váratlan hiba adódott az ujjlenyomat regisztrálása közben"
 
 #: pam/pam_fprintd.c:584
 msgid "Verification timed out"
