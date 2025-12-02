@@ -4,13 +4,13 @@
 #
 # Translators:
 # Chris  Leonard <cjl@laptop.org>, 2012
-# Andi Chandler <andi@gowling.com>, 2022.
+# Andi Chandler <andi@gowling.com>, 2022, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: fprintd\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-02 09:49+0000\n"
-"PO-Revision-Date: 2022-11-05 01:19+0000\n"
+"PO-Revision-Date: 2025-10-16 14:54+0000\n"
 "Last-Translator: Andi Chandler <andi@gowling.com>\n"
 "Language-Team: English (United Kingdom) <https://translate.fedoraproject.org/"
 "projects/fprintd/fprintd/en_GB/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.13.3\n"
 
 #: data/net.reactivated.fprint.device.policy.in:13
 msgid "Verify a fingerprint"
@@ -270,44 +270,36 @@ msgid "Your finger was not centered, try swiping your finger again"
 msgstr "Your finger was not centred, try swiping your finger again"
 
 #: pam/fingerprint-strings.h:181 pam/fingerprint-strings.h:227
-#, fuzzy
-#| msgid "Your finger was not centered, try swiping your finger again"
 msgid "Your finger was not centered, try touching the sensor again"
-msgstr "Your finger was not centred, try swiping your finger again"
+msgstr "Your finger was not centred, try touching the sensor again"
 
 #: pam/fingerprint-strings.h:186 pam/fingerprint-strings.h:232
 msgid "Remove your finger, and try swiping your finger again"
 msgstr "Remove your finger, and try swiping your finger again"
 
 #: pam/fingerprint-strings.h:188 pam/fingerprint-strings.h:234
-#, fuzzy
-#| msgid "Remove your finger, and try swiping your finger again"
 msgid "Remove your finger, and try touching the sensor again"
-msgstr "Remove your finger, and try swiping your finger again"
+msgstr "Remove your finger, and try touching the sensor again"
 
 #: pam/fingerprint-strings.h:193 pam/fingerprint-strings.h:239
-#, fuzzy
-#| msgid "Swipe was too short, try again"
 msgid "Swipe was too fast, try again"
-msgstr "Swipe was too short, try again"
+msgstr "Swipe was too fast, try again"
 
 #: pam/fingerprint-strings.h:195 pam/fingerprint-strings.h:241
-#, fuzzy
-#| msgid "Swipe was too short, try again"
 msgid "Finger scan was too fast, try again"
-msgstr "Swipe was too short, try again"
+msgstr "Finger scan was too fast, try again"
 
 #: pam/fingerprint-strings.h:199
 msgid "An unexpected error happened during fingerprint verification"
-msgstr ""
+msgstr "An unexpected error happened during fingerprint verification"
 
 #: pam/fingerprint-strings.h:244
 msgid "The fingerprint has been already enrolled. Try using another finger."
-msgstr ""
+msgstr "The fingerprint has been already enrolled. Try using another finger."
 
 #: pam/fingerprint-strings.h:248
 msgid "An unexpected error happened during fingerprint enrollment"
-msgstr ""
+msgstr "An unexpected error happened during fingerprint enrollment"
 
 #: pam/pam_fprintd.c:584
 msgid "Verification timed out"
