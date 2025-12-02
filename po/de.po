@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Ettore Atalan <atalanttore@googlemail.com>, 2014, 2021.
+# Ettore Atalan <atalanttore@googlemail.com>, 2014, 2021, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: fprintd\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-02 09:49+0000\n"
-"PO-Revision-Date: 2021-12-06 12:16+0000\n"
+"PO-Revision-Date: 2025-06-16 05:48+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://translate.fedoraproject.org/projects/fprintd/"
 "fprintd/de/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: data/net.reactivated.fprint.device.policy.in:13
 msgid "Verify a fingerprint"
@@ -120,7 +120,7 @@ msgstr "Legen Sie Ihren linken Mittelfinger auf den Fingerabdruckleser"
 #: pam/fingerprint-strings.h:66
 #, c-format
 msgid "Place your left middle finger on %s"
-msgstr "Legen Sie Ihren linken Zeigefinger auf %s"
+msgstr "Legen Sie Ihren linken Mittelfinger auf %s"
 
 #: pam/fingerprint-strings.h:67
 msgid "Swipe your left middle finger across the fingerprint reader"
@@ -277,11 +277,9 @@ msgstr ""
 "Ihr Finger war nicht zentriert, versuchen Sie erneut Ihren Finger zu wischen"
 
 #: pam/fingerprint-strings.h:181 pam/fingerprint-strings.h:227
-#, fuzzy
-#| msgid "Your finger was not centered, try swiping your finger again"
 msgid "Your finger was not centered, try touching the sensor again"
 msgstr ""
-"Ihr Finger war nicht zentriert, versuchen Sie erneut Ihren Finger zu wischen"
+"Ihr Finger war nicht zentriert, versuchen Sie, den Sensor erneut zu berühren"
 
 #: pam/fingerprint-strings.h:186 pam/fingerprint-strings.h:232
 msgid "Remove your finger, and try swiping your finger again"
@@ -289,35 +287,35 @@ msgstr ""
 "Entfernen Sie Ihren Finger und versuchen Sie erneut Ihren Finger zu wischen"
 
 #: pam/fingerprint-strings.h:188 pam/fingerprint-strings.h:234
-#, fuzzy
-#| msgid "Remove your finger, and try swiping your finger again"
 msgid "Remove your finger, and try touching the sensor again"
 msgstr ""
-"Entfernen Sie Ihren Finger und versuchen Sie erneut Ihren Finger zu wischen"
+"Entfernen Sie Ihren Finger und versuchen Sie erneut, den Sensor zu berühren"
 
 #: pam/fingerprint-strings.h:193 pam/fingerprint-strings.h:239
-#, fuzzy
-#| msgid "Swipe was too short, try again"
 msgid "Swipe was too fast, try again"
-msgstr "Das Wischen war zu kurz, versuchen Sie es erneut"
+msgstr "Das Wischen war zu schnell, versuchen Sie es erneut"
 
 #: pam/fingerprint-strings.h:195 pam/fingerprint-strings.h:241
-#, fuzzy
-#| msgid "Swipe was too short, try again"
 msgid "Finger scan was too fast, try again"
-msgstr "Das Wischen war zu kurz, versuchen Sie es erneut"
+msgstr "Fingerscan war zu schnell, versuchen Sie es erneut"
 
 #: pam/fingerprint-strings.h:199
 msgid "An unexpected error happened during fingerprint verification"
 msgstr ""
+"Bei der Verifizierung der Fingerabdrücke ist ein unerwarteter Fehler "
+"aufgetreten"
 
 #: pam/fingerprint-strings.h:244
 msgid "The fingerprint has been already enrolled. Try using another finger."
 msgstr ""
+"Der Fingerabdruck wurde bereits registriert. Versuchen Sie es mit einem "
+"anderen Finger."
 
 #: pam/fingerprint-strings.h:248
 msgid "An unexpected error happened during fingerprint enrollment"
 msgstr ""
+"Bei der Registrierung von Fingerabdrücken ist ein unerwarteter Fehler "
+"aufgetreten"
 
 #: pam/pam_fprintd.c:584
 msgid "Verification timed out"
