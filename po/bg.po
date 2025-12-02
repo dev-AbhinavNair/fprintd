@@ -5,13 +5,14 @@
 # Translators:
 # Alexander Shopov <ash@kambanaria.org>, 2011, 2025.
 # Tony Ivanov <duskull88@fastmail.fm>, 2017
+# twlvnn kraftwerk <kraft_werk@tutanota.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: fprintd\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-02 09:49+0000\n"
-"PO-Revision-Date: 2025-08-04 08:53+0000\n"
-"Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
+"PO-Revision-Date: 2025-11-16 01:57+0000\n"
+"Last-Translator: twlvnn kraftwerk <kraft_werk@tutanota.com>\n"
 "Language-Team: Bulgarian <https://translate.fedoraproject.org/projects/"
 "fprintd/fprintd/bg/>\n"
 "Language: bg\n"
@@ -19,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #: data/net.reactivated.fprint.device.policy.in:13
 msgid "Verify a fingerprint"
@@ -267,7 +268,7 @@ msgstr "Отново прекарайте пръста си върху чете�
 
 #: pam/fingerprint-strings.h:175 pam/fingerprint-strings.h:221
 msgid "Swipe was too short, try again"
-msgstr "Прекалено бързо прекарахте пръста си, опитайте отново"
+msgstr "Прекалено бавно прекарахте пръста си, опитайте отново"
 
 #: pam/fingerprint-strings.h:179 pam/fingerprint-strings.h:225
 msgid "Your finger was not centered, try swiping your finger again"
