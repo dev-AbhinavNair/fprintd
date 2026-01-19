@@ -6,13 +6,14 @@
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2012
 # Acs Zoltan <acszoltan111@gmail.com>, 2022.
 # Nimrod Turi <nimrodturi@gmail.com>, 2025.
+# Mate Babos <hunorjani17@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: fprintd\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-02 09:49+0000\n"
-"PO-Revision-Date: 2025-12-02 22:10+0000\n"
-"Last-Translator: Nimrod Turi <nimrodturi@gmail.com>\n"
+"PO-Revision-Date: 2026-01-19 17:58+0000\n"
+"Last-Translator: Mate Babos <hunorjani17@gmail.com>\n"
 "Language-Team: Hungarian <https://translate.fedoraproject.org/projects/"
 "fprintd/fprintd/hu/>\n"
 "Language: hu\n"
@@ -20,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: data/net.reactivated.fprint.device.policy.in:13
 msgid "Verify a fingerprint"
@@ -39,9 +40,8 @@ msgid "Privileges are required to enroll or delete fingerprints."
 msgstr "Jogosultság szükséges ujjlenyomatok felvételéhez vagy törléséhez."
 
 #: data/net.reactivated.fprint.device.policy.in:33
-#, fuzzy
 msgid "Select a user to manage fingerprints for"
-msgstr "Válassza ki a felhasználót, aki kezeli az ujjlenyomatokat"
+msgstr "Válasszon ki egy felhasználót, hogy kezelje az ujjlenyomatait"
 
 #: data/net.reactivated.fprint.device.policy.in:34
 msgid "Privileges are required to manage fingerprints for other users."
@@ -266,39 +266,31 @@ msgstr "Húzza le ismét az ujját"
 
 #: pam/fingerprint-strings.h:175 pam/fingerprint-strings.h:221
 msgid "Swipe was too short, try again"
-msgstr "A lehúzás túl gyors volt, próbálja újra"
+msgstr "A lehúzás túl rövid volt, próbálja újra"
 
 #: pam/fingerprint-strings.h:179 pam/fingerprint-strings.h:225
 msgid "Your finger was not centered, try swiping your finger again"
 msgstr "Az ujja nem volt középen, próbálj ismét lehúzni"
 
 #: pam/fingerprint-strings.h:181 pam/fingerprint-strings.h:227
-#, fuzzy
-#| msgid "Your finger was not centered, try swiping your finger again"
 msgid "Your finger was not centered, try touching the sensor again"
-msgstr "Az ujja nem volt középen, próbálj ismét lehúzni"
+msgstr "Az ujja nem volt középen, próbálja meg újra megérinteni a szenzort"
 
 #: pam/fingerprint-strings.h:186 pam/fingerprint-strings.h:232
 msgid "Remove your finger, and try swiping your finger again"
 msgstr "Vegye el az ujját és próbálja újra lehúzni"
 
 #: pam/fingerprint-strings.h:188 pam/fingerprint-strings.h:234
-#, fuzzy
-#| msgid "Remove your finger, and try swiping your finger again"
 msgid "Remove your finger, and try touching the sensor again"
-msgstr "Vegye el az ujját és próbálja újra lehúzni"
+msgstr "Vegye el az ujját, és próbálja meg újra megérinteni a szenzort"
 
 #: pam/fingerprint-strings.h:193 pam/fingerprint-strings.h:239
-#, fuzzy
-#| msgid "Swipe was too short, try again"
 msgid "Swipe was too fast, try again"
 msgstr "A lehúzás túl gyors volt, próbálja újra"
 
 #: pam/fingerprint-strings.h:195 pam/fingerprint-strings.h:241
-#, fuzzy
-#| msgid "Swipe was too short, try again"
 msgid "Finger scan was too fast, try again"
-msgstr "A lehúzás túl gyors volt, próbálja újra"
+msgstr "Az ujjbeolvasás túl gyors volt, próbálja újra"
 
 #: pam/fingerprint-strings.h:199
 msgid "An unexpected error happened during fingerprint verification"
