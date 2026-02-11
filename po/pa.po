@@ -4,13 +4,13 @@
 #
 # Translators:
 # A S Alam <alam.yellow@gmail.com>, 2012-2013
-# A S Alam <aalam@users.noreply.translate.fedoraproject.org>, 2023, 2024.
+# A S Alam <aalam@users.noreply.translate.fedoraproject.org>, 2023, 2024, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: fprintd\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-02 09:49+0000\n"
-"PO-Revision-Date: 2024-07-17 12:38+0000\n"
+"PO-Revision-Date: 2026-02-11 12:58+0000\n"
 "Last-Translator: A S Alam <aalam@users.noreply.translate.fedoraproject.org>\n"
 "Language-Team: Punjabi <https://translate.fedoraproject.org/projects/fprintd/"
 "fprintd/pa/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: data/net.reactivated.fprint.device.policy.in:13
 msgid "Verify a fingerprint"
@@ -270,44 +270,36 @@ msgid "Your finger was not centered, try swiping your finger again"
 msgstr "ਤੁਹਾਡੀ ਉਂਗਲ ਕੇਂਦਰ ਵਿੱਚ ਨਹੀਂ ਸੀ, ਆਪਣੀ ਉਂਗਲ ਫੇਰ ਘਸਾਉ ਜੀ"
 
 #: pam/fingerprint-strings.h:181 pam/fingerprint-strings.h:227
-#, fuzzy
-#| msgid "Your finger was not centered, try swiping your finger again"
 msgid "Your finger was not centered, try touching the sensor again"
-msgstr "ਤੁਹਾਡੀ ਉਂਗਲ ਕੇਂਦਰ ਵਿੱਚ ਨਹੀਂ ਸੀ, ਆਪਣੀ ਉਂਗਲ ਫੇਰ ਘਸਾਉ ਜੀ"
+msgstr "ਤੁਹਾਡੀ ਉਂਗਲ ਕੇਂਦਰ ਵਿੱਚ ਨਹੀਂ ਸੀ, ਸੈਂਸਰ ਨੂੰ ਫੇਰ ਛੂਹਣ ਦੀ ਕੋਸ਼ਿਸ ਕਰੋ"
 
 #: pam/fingerprint-strings.h:186 pam/fingerprint-strings.h:232
 msgid "Remove your finger, and try swiping your finger again"
 msgstr "ਆਪਣੀ ਉਂਗਲ ਘਸਾਉ ਅਤੇ ਫੇਰ ਆਪਣੀ ਉਂਗਲ ਦੁਬਾਰਾ ਘਸਾਉਣ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ"
 
 #: pam/fingerprint-strings.h:188 pam/fingerprint-strings.h:234
-#, fuzzy
-#| msgid "Remove your finger, and try swiping your finger again"
 msgid "Remove your finger, and try touching the sensor again"
-msgstr "ਆਪਣੀ ਉਂਗਲ ਘਸਾਉ ਅਤੇ ਫੇਰ ਆਪਣੀ ਉਂਗਲ ਦੁਬਾਰਾ ਘਸਾਉਣ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ"
+msgstr "ਆਪਣੀ ਉਂਗਲ ਨੂੰ ਹਟਾਓ ਅਤੇ ਸੈਂਸਰ ਨੂੰ ਫੇਰ ਛੂਹਣ ਦੀ ਕੋਸ਼ਿਸ ਕਰੋ"
 
 #: pam/fingerprint-strings.h:193 pam/fingerprint-strings.h:239
-#, fuzzy
-#| msgid "Swipe was too short, try again"
 msgid "Swipe was too fast, try again"
-msgstr "ਉਂਗਲ ਥੋੜੀ ਘਸਾਈ ਹੈ, ਫੇਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ"
+msgstr "ਬਹੁਤ ਤੇਜ਼ ਘਸਾਈ ਹੈ, ਫੇਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ"
 
 #: pam/fingerprint-strings.h:195 pam/fingerprint-strings.h:241
-#, fuzzy
-#| msgid "Swipe was too short, try again"
 msgid "Finger scan was too fast, try again"
-msgstr "ਉਂਗਲ ਥੋੜੀ ਘਸਾਈ ਹੈ, ਫੇਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ"
+msgstr "ਉਂਗਲ ਸਕੈਨ ਬਹੁਤ ਜ਼ਿਆਦਾ ਸੀ, ਫੇਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ"
 
 #: pam/fingerprint-strings.h:199
 msgid "An unexpected error happened during fingerprint verification"
-msgstr ""
+msgstr "ਫਿੰਗਰਪਰਿੰਟ ਜਾਂਚ ਦੇ ਦੌਰਾਨ ਅਚਨਚੇਤ ਗਲਤੀ ਆਈ ਹੈ"
 
 #: pam/fingerprint-strings.h:244
 msgid "The fingerprint has been already enrolled. Try using another finger."
-msgstr ""
+msgstr "ਫਿੰਗਰਪਰਿੰਟ ਪਹਿਲਾਂ ਦਾਖਲ ਕੀਤਾ ਹੈ। ਹੋਰ ਉਂਗਲ ਅਜ਼ਮਾ ਕੇ ਵੇਖੋ।"
 
 #: pam/fingerprint-strings.h:248
 msgid "An unexpected error happened during fingerprint enrollment"
-msgstr ""
+msgstr "ਫਿੰਗਰਪਰਿੰਟ ਦਾਖਲ ਕਰਨ ਦੌਰਾਨ ਅਚਨਚੇਤ ਗਲਤੀ ਆਈ ਹੈ"
 
 #: pam/pam_fprintd.c:584
 msgid "Verification timed out"
