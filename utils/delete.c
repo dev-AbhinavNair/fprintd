@@ -163,7 +163,7 @@ process_devices (guint argc, char **argv)
 
 
   const GOptionEntry user_options[] = {
-    { "finger", 'f',  0, G_OPTION_ARG_STRING, &fingername, "Finger selected to verify (default is automatic)", NULL },
+    { "finger", 'f',  0, G_OPTION_ARG_STRING, &fingername, "Finger selected to delete (default is automatic)", NULL },
     { NULL }
   };
 

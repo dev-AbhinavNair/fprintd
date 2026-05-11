@@ -209,7 +209,7 @@ release_device (FprintDBusDevice *dev)
 }
 
 static const GOptionEntry entries[] = {
-  { "finger", 'f',  0, G_OPTION_ARG_STRING, &finger_name, "Finger selected to verify (default is automatic)", NULL },
+  { "finger", 'f',  0, G_OPTION_ARG_STRING, &finger_name, "Finger selected to enroll (default is automatic)", NULL },
   { G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_STRING_ARRAY, &usernames, NULL, "[username]" },
   { NULL }
 };
