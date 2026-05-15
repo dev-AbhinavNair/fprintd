@@ -18,6 +18,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include "glib.h"
 #define _GNU_SOURCE
 #include <stdlib.h>
 #include <string.h>
@@ -32,6 +33,7 @@ static FprintDBusManager *manager = NULL;
 static GDBusConnection *connection = NULL;
 static char *finger_name = NULL;
 static char **usernames = NULL;
+static gboolean force_overwrite = FALSE;
 
 typedef enum {
   ENROLL_INCOMPLETE,
@@ -99,6 +101,45 @@ open_device (const char *username)
       exit (1);
     }
   return g_steal_pointer (&dev);
+}
+
+static gboolean
+maybe_confirm_overwrite (FprintDBusDevice *dev, const char *username, GError **error)
+{
+  g_autoptr(GError) local_error = NULL;
+  g_auto(GStrv) enrolled = NULL;
+  char buf[8];
+
+  if (!fprint_dbus_device_call_list_enrolled_fingers_sync (dev, username,
+                                                           G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION,
+                                                           -1, &enrolled, NULL,
+                                                           &local_error))
+    {
+      if (g_dbus_error_is_remote_error (local_error))
+        {
+          g_autofree char *dbus_error = g_dbus_error_get_remote_error (local_error);
+
+          if (g_strcmp0 (dbus_error,
+                         "net.reactivated.Fprint.Error.NoEnrolledPrints") == 0)
+            return TRUE;
+        }
+
+      g_propagate_prefixed_error (error, g_steal_pointer (&local_error),
+                                  "ListEnrolledFingers failed: ");
+      return FALSE;
+    }
+
+  if (enrolled == NULL ||
+      !g_strv_contains ((const char **) enrolled, finger_name))
+    return TRUE;
+
+  g_print ("'%s' is already enrolled. Overwrite? [y/N] ", finger_name);
+  fflush (stdout);
+
+  if (!fgets (buf, sizeof (buf), stdin))
+    return FALSE;
+
+  return buf[0] == 'y' || buf[0] == 'Y';
 }
 
 static void
@@ -210,6 +251,7 @@ release_device (FprintDBusDevice *dev)
 
 static const GOptionEntry entries[] = {
   { "finger", 'f',  0, G_OPTION_ARG_STRING, &finger_name, "Finger selected to enroll (default is automatic)", NULL },
+  { "force", 'y',  0, G_OPTION_ARG_NONE, &force_overwrite, "Overwrite an existing enrollment without prompting", NULL },
   { G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_STRING_ARRAY, &usernames, NULL, "[username]" },
   { NULL }
 };
@@ -218,10 +260,10 @@ int
 main (int argc, char **argv)
 {
   g_autoptr(FprintDBusDevice) dev = NULL;
+  g_autoptr(GError) err = NULL;
   GOptionContext *context;
   FprintEnrollStatus status;
-
-  g_autoptr(GError) err = NULL;
+  const char *username;
 
   setlocale (LC_ALL, "");
 
@@ -239,10 +281,26 @@ main (int argc, char **argv)
 
   create_manager ();
 
-  dev = open_device (usernames ? usernames[0] : "");
-  status = do_enroll (dev);
+  username = usernames ? usernames[0] : "";
+  dev = open_device (username);
+
+  if (force_overwrite || maybe_confirm_overwrite (dev, username, &err))
+    {
+      status = do_enroll (dev);
+    }
+  else
+    {
+      if (err)
+        g_print ("Error checking for existing enrollment: %s\n", err->message);
+      else
+        g_print ("Not overwriting existing enrollment.\n");
+
+      status = ENROLL_FAILED;
+    }
+
   release_device (dev);
   g_free (finger_name);
   g_strfreev (usernames);
+
   return status == ENROLL_COMPLETED ? EXIT_SUCCESS : EXIT_FAILURE;
 }
