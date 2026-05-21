@@ -4,11 +4,11 @@ fprintd - Fingerprint management daemon, and test applications
 
 =head1 SYNOPSIS
 
-B<fprintd-enroll> [-f finger] [usename]
+B<fprintd-enroll> [-f finger] [username]
 
 B<fprintd-list> username [usernames...]
 
-B<fprintd-verify> [-f finger] [usename]
+B<fprintd-verify> [-f finger] [username]
 
 B<fprintd-delete> username [usernames...]
 
