@@ -42,7 +42,11 @@ foreach t: tests
 endforeach
 
 if get_option('pam')
-    subdir('pam')
+    if pam_wrapper_dep.found() and python3_available_modules.contains('pypamtest')
+        subdir('pam')
+    else
+        test('PAM tests lacks dependencies', sh, args: ['-c', 'exit 77'])
+    endif
 endif
 
 # Add a way to discover and run python unit tests separately

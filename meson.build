@@ -186,7 +186,9 @@ if get_option('tests')
     python3_available_modules = []
 
     foreach module, required : python3_test_modules
-        if required and run_command(python3, '-c', 'import @0@'.format(module), check: false).returncode() != 0
+        if run_command(python3, '-c', 'import @0@'.format(module), check: false).returncode() == 0
+            python3_available_modules += module
+        elif required
             warning('Python3 module \'' + module + '\' required by test suite not found')
         endif
     endforeach
