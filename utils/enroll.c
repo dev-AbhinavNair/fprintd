@@ -261,7 +261,7 @@ main (int argc, char **argv)
 {
   g_autoptr(FprintDBusDevice) dev = NULL;
   g_autoptr(GError) err = NULL;
-  GOptionContext *context;
+  g_autoptr(GOptionContext) context = NULL;
   FprintEnrollStatus status;
   const char *username;
 

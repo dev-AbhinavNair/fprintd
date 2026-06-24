@@ -288,7 +288,7 @@ main (int argc, char **argv)
 {
   g_autoptr(FprintDBusDevice) dev = NULL;
   g_autoptr(GError) err = NULL;
-  GOptionContext *context;
+  g_autoptr(GOptionContext) context = NULL;
   const char *username = NULL;
   gboolean match;
 
