@@ -341,6 +341,7 @@ def EnrollStart(device, finger_name):
             'Action \'%s\' already in progress' % device.action,
             name='net.reactivated.Fprint.Error.AlreadyInUse')
     device.action = 'enroll'
+    device.enrolling_finger = finger_name
 
 @dbus.service.method(DEVICE_MOCK_IFACE,
                      in_signature='sb', out_signature='')
@@ -353,11 +354,17 @@ def EmitEnrollStatus(device, result, done):
         raise dbus.exceptions.DBusException(
             'Unknown enroll status \'%s\'' % result,
             name='org.freedesktop.DBus.Error.InvalidArgs')
+
+    if done and result == 'enroll-completed':
+        if not device.claimed_user in device.fingers.keys():
+            device.fingers[device.claimed_user] = []
+        if device.enrolling_finger not in device.fingers[device.claimed_user]:
+            device.fingers[device.claimed_user].append(device.enrolling_finger)
+
     device.EmitSignal(DEVICE_IFACE, 'EnrollStatus', 'sb', [
                           result,
                           done
                       ])
-    # FIXME save enrolled finger?
 
 @dbus.service.method(DEVICE_IFACE,
                      in_signature='', out_signature='')
@@ -367,6 +374,7 @@ def EnrollStop(device):
             'No enrollment to stop',
             name='net.reactivated.Fprint.Error.NoActionInProgress')
     device.action = None
+    device.enrolling_finger = None
 
 @dbus.service.method(DEVICE_MOCK_IFACE,
                      in_signature='sas', out_signature='')
