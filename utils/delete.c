@@ -252,6 +252,7 @@ main (int argc, char **argv)
 
   create_manager ();
   process_devices (argc, argv);
+  g_clear_object (&manager);
 
   return 0;
 }

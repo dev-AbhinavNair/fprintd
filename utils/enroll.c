@@ -301,6 +301,7 @@ main (int argc, char **argv)
   release_device (dev);
   g_free (finger_name);
   g_strfreev (usernames);
+  g_clear_object (&manager);
 
   return status == ENROLL_COMPLETED ? EXIT_SUCCESS : EXIT_FAILURE;
 }

@@ -160,6 +160,7 @@ main (int argc, char **argv)
     }
 
   process_devices (argv);
+  g_clear_object (&manager);
 
   return 0;
 }

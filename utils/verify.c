@@ -323,5 +323,7 @@ main (int argc, char **argv)
   find_finger (dev, username);
   match = do_verify (dev);
   release_device (dev);
+  g_clear_object (&manager);
+
   return match ? EXIT_SUCCESS : EXIT_FAILURE;
 }
