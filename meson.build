@@ -6,10 +6,11 @@ project('fprintd', 'c',
         'warning_level=3',
         'c_std=gnu99',
     ],
-    meson_version: '>= 0.58.0')
+    meson_version: '>= 0.59.0')
 
 gnome = import('gnome')
 i18n = import('i18n')
+fs = import('fs')
 
 cc = meson.get_compiler('c')
 common_cflags = cc.get_supported_arguments([

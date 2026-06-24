@@ -1,5 +1,11 @@
+installed_tests = get_option('installed-tests')
+installed_tests_execdir = fprintd_installdir / 'installed-tests' / 'fprintd'
+installed_tests_testdir = datadir / 'installed-tests' / 'fprintd'
+installed_tests_data_subdir = installed_tests_testdir / 'tests'
+
 # Add a way to discover and run python unit tests separately
 # https://github.com/mesonbuild/meson/issues/6851
+
 python_tests = [
     # List all the python tests, must be in the form:
     # {
@@ -8,6 +14,9 @@ python_tests = [
     # Fields below are optional:
     #     'workdir': '',
     #     'env': [],
+    #     'installed_env': [],
+    #     'installed_data': [],
+    #     'installed_extra_content': '',
     #     'depends': [],
     #     'suite': [],
     #     'extra_args': [],
@@ -22,6 +31,11 @@ tests = [
 ]
 
 foreach t: tests
+    suite = []
+    if t == 'fprintd'
+        suite += 'daemon'
+    endif
+
     python_tests += [
         {
             'name': t,
@@ -32,11 +46,17 @@ foreach t: tests
                 'FPRINT_BUILD_DIR=' + meson.project_build_root() / 'src',
                 'TOPSRCDIR=' + meson.project_source_root(),
             ],
+            'installed_env': [
+                'G_DEBUG=fatal-criticals',
+                'G_MESSAGES_DEBUG=all',
+                'TOPSRCDIR=' + installed_tests_testdir,
+                'POLKITD_MOCK_PATH=' + installed_tests_data_subdir / 'dbusmock',
+            ],
             'depends': [
                 fprintd,
                 fprintd_utils,
             ],
-            'suite': [t == 'fprintd' ? 'daemon' : ''],
+            'suite': suite,
         }
     ]
 endforeach
@@ -83,6 +103,32 @@ foreach pt: python_tests
             is_parallel: pt.get('is_parallel', true),
         )
     endforeach
+
+    if installed_tests
+        install_data(
+            pt.get('file'),
+            install_dir: installed_tests_execdir,
+            install_mode: 'rwxr-xr-x',
+        )
+
+        foreach extra_file: pt.get('installed_data', [])
+            install_data(
+                extra_file.get('file'),
+                install_dir: extra_file.get('dir'),
+            )
+        endforeach
+
+        configure_file(
+            input: 'test.in',
+            output: pt.get('name') + '.test',
+            install_dir: installed_tests_testdir,
+            configuration: {
+                'exec': installed_tests_execdir / fs.name(pt.get('file')),
+                'env': ' '.join(pt.get('installed_env', pt.get('env', []))),
+                'extra_content': pt.get('installed_extra_content', ''),
+            },
+        )
+    endif
 endforeach
 
 timeout_multiplier = 1
@@ -132,34 +178,23 @@ if not address_sanitizer and find_program('valgrind', required: false).found()
     )
 endif
 
-if get_option('installed-tests')
-    installed_tests_dir = fprintd_installdir / 'installed-tests' / 'fprintd'
-
-    install_subdir('dbusmock',
-        install_dir: installed_tests_dir,
-    )
-
-    install_subdir('pam',
-        install_dir: installed_tests_dir,
+if installed_tests
+    install_data([
+        'dbusmock' / 'fprintd.py',
+        'dbusmock' / 'polkitd.py',
+        ],
+        install_dir: installed_tests_data_subdir / 'dbusmock',
     )
 
     install_subdir('prints',
-        install_dir: installed_tests_dir,
+        install_dir: installed_tests_data_subdir,
     )
 
     install_data([
-            'fprintd.py',
             'output_checker.py',
-            'test_fprintd_utils.py',
             'unittest_inspector.py',
         ],
-        install_dir: installed_tests_dir,
-        install_mode: 'rwxr-xr-x',
-    )
-    install_data([
-            'output_checker.py',
-        ],
-        install_dir: installed_tests_dir,
+        install_dir: installed_tests_execdir,
     )
 endif
 

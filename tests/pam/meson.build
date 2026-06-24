@@ -6,6 +6,8 @@ tests = [
 
 preloaded_libs = []
 pam_tests_ld_preload = []
+pam_tests_installed_env = []
+pam_tests_installed_data = []
 
 if address_sanitizer
     # ASAN has to be the first in list
@@ -42,6 +44,33 @@ foreach libname: preloaded_libs
     endif
 endforeach
 
+if installed_tests and tests.length() > 0
+    pam_service_file_installed = configure_file(
+        input: 'services/fprintd-pam-test.in',
+        output: 'fprintd-pam-test',
+        configuration: configuration_data({
+            'FPRINTDPAMPATH': pam_modules_dir / 'pam_fprintd.so',
+        }),
+    )
+
+    pam_tests_installed_env = [
+        'TOPBUILDDIR=' + installed_tests_testdir,
+        'TOPSRCDIR=' + installed_tests_testdir,
+        'LD_PRELOAD=' + ' '.join(pam_tests_ld_preload),
+        'PAM_WRAPPER=1',
+        'PAM_WRAPPER_DEBUGLEVEL=2',
+        'PAM_WRAPPER_SERVICE_DIR=' + installed_tests_testdir / 'tests' / 'pam' / 'services',
+        'G_DEBUG=fatal-warnings',
+    ]
+
+    pam_tests_installed_data = [
+        {
+            'file': pam_service_file_installed,
+            'dir': installed_tests_testdir / 'tests' / 'pam' / 'services',
+        },
+    ]
+endif
+
 foreach t: tests
     python_tests += [
         {
@@ -62,6 +91,8 @@ foreach t: tests
                 pam_service_file,
             ],
             'suite': ['PAM'],
+            'installed_env': pam_tests_installed_env,
+            'installed_data': pam_tests_installed_data,
         }
     ]
 endforeach
