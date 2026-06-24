@@ -146,10 +146,8 @@ dbus_service_dir = get_option('dbus_service_dir')
 dbus_data_dir = datadir
 dbus_interfaces_dir = ''
 
-if dbus_dep.found()
-    if dbus_service_dir == ''
-        dbus_service_dir = dbus_dep.get_variable('system_bus_services_dir')
-    endif
+if dbus_dep.found() and dbus_service_dir == ''
+    dbus_service_dir = dbus_dep.get_variable('system_bus_services_dir')
     dbus_interfaces_dir = dbus_dep.get_variable('interfaces_dir')
     dbus_data_dir = dbus_dep.get_variable('datadir')
 endif
