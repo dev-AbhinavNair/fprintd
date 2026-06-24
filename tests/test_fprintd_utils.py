@@ -102,6 +102,7 @@ class TestFprintdUtilsBase(dbusmock.DBusTestCase):
         utility = [ os.path.join(self.tools_prefix, 'fprintd-{}'.format(utility_name)) ]
         output = OutputChecker()
         process = subprocess.Popen(self.wrapper_args + utility + args,
+                                   stdin=subprocess.PIPE,
                                    stdout=output.fd,
                                    stderr=subprocess.STDOUT)
         output.writer_attached()
@@ -137,14 +138,68 @@ class TestFprintdUtils(TestFprintdUtilsBase):
         super().setUp()
         self.setup_device()
 
-    def test_fprintd_enroll(self):
-        process, out = self.start_utility_process('enroll', ['-f', 'right-index-finger', 'toto'])
+    def start_enroll_process(self, user='toto', finger=None, extra_args=[]):
+        return self.start_utility_process('enroll', ['-f', finger, user] + extra_args)
 
-        out.check_line(rb'right-index-finger', 0)
+    def test_fprintd_enroll(self):
+        _, out = self.start_enroll_process(finger='right-index-finger')
+
+        out.check_line(b'right-index-finger', 0)
 
         self.device_mock.EmitEnrollStatus('enroll-completed', True)
 
-        out.check_line(rb'Enroll result: enroll-completed', self.sleep_time)
+        out.check_line(b'Enroll result: enroll-completed', self.sleep_time)
+
+    def test_fprintd_enroll_again_forced(self):
+        self.test_fprintd_enroll()
+
+        _, out = self.start_enroll_process(finger='right-index-finger', extra_args=['-y'])
+
+        out.check_line(b'right-index-finger', 0)
+        self.device_mock.EmitEnrollStatus('enroll-completed', True)
+        out.check_line(b'Enroll result: enroll-completed', self.sleep_time)
+
+    def test_fprintd_enroll_again_interactive(self):
+        self.test_fprintd_enroll()
+
+        process, out = self.start_enroll_process(finger='right-index-finger')
+
+        out.check_current_buffer(
+            b'\'right-index-finger\' is already enrolled. Overwrite?',
+            self.sleep_time)
+        process.stdin.write(b'y\n')
+        process.stdin.flush()
+
+        out.check_line(b'Enrolling right-index-finger', self.sleep_time)
+
+        self.device_mock.EmitEnrollStatus('enroll-completed', True)
+        out.check_line(b'Enroll result: enroll-completed', self.sleep_time)
+
+    def test_fprintd_enroll_again_denied(self):
+        self.test_fprintd_enroll()
+
+        process, out = self.start_enroll_process(finger='right-index-finger')
+
+        out.check_current_buffer(
+            b'\'right-index-finger\' is already enrolled. Overwrite?',
+            self.sleep_time)
+        process.stdin.write(b'n\n')
+        process.stdin.flush()
+
+        out.check_line(b'Not overwriting existing enrollment.', self.sleep_time)
+
+    def test_fprintd_enroll_again_denied_default(self):
+        self.test_fprintd_enroll()
+
+        process, out = self.start_enroll_process(finger='right-index-finger')
+
+        out.check_current_buffer(
+            b'\'right-index-finger\' is already enrolled. Overwrite?',
+            self.sleep_time)
+        process.stdin.write(b'\n')
+        process.stdin.flush()
+
+        out.check_line(b'Not overwriting existing enrollment.', self.sleep_time)
 
     def test_fprintd_list(self):
         # Rick has no fingerprints enrolled
