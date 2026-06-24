@@ -210,15 +210,16 @@ do_enroll (FprintDBusDevice *dev)
       exit (1);
     }
 
-  g_print ("Enrolling %s finger.\n", finger_name);
   if (!fprint_dbus_device_call_enroll_start_sync (dev, finger_name,
                                                   G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION,
                                                   -1,
                                                   NULL, &error))
     {
-      g_print ("EnrollStart failed: %s\n", error->message);
+      g_print ("EnrollStart for finger %s failed: %s\n", finger_name, error->message);
       exit (1);
     }
+
+  g_print ("Enrolling %s finger.\n", finger_name);
 
   while (enroll_status == ENROLL_INCOMPLETE)
     g_main_context_iteration (NULL, TRUE);
