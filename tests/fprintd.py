@@ -334,6 +334,22 @@ class FPrintdTest(dbusmock.DBusTestCase):
         self.addCleanup(self._polkitd.stdout.close)
         self.addCleanup(self.stop_server, '_polkitd', '_polkitd_obj')
 
+        def on_polkitd_stdout_read(source, condition):
+            if condition & (GLib.IO_HUP | GLib.IO_ERR):
+                return False
+
+            line = source.readline()
+            if line:
+                print('POLKITD:', line.decode().rstrip())
+            return True
+
+        stdout_watch = GLib.io_add_watch(
+            self._polkitd.stdout,
+            GLib.PRIORITY_DEFAULT,
+            GLib.IO_IN | GLib.IO_HUP | GLib.IO_ERR,
+            on_polkitd_stdout_read)
+        self.addCleanup(GLib.source_remove, stdout_watch)
+
         return self._polkitd
 
     def stop_server(self, proc_attr, obj_attr):
