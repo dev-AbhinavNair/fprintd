@@ -84,30 +84,14 @@ class OutputChecker(object):
 
     def check_line_re(self, needle_re, timeout=0, failmsg=None):
         deadline = time.time() + timeout
-
-        if isinstance(needle_re, str):
-            needle_re = needle_re.encode('ascii')
-
-        r = re.compile(needle_re)
+        needle_re, r = self._prepare_needle(needle_re)
         ret = []
 
         while True:
             try:
                 l = self._lines.pop(0)
             except IndexError:
-                # EOF, throw error
-                if self._pipe_fd_r == -1:
-                    if failmsg:
-                        raise AssertionError("No further messages: " % failmsg) from None
-                    else:
-                        raise AssertionError('No client waiting for needle %s' % (str(needle_re))) from None
-
-                # Check if should wake up
-                if not self._lines_sem.acquire(timeout = deadline - time.time()):
-                    if failmsg:
-                        raise AssertionError(failmsg) from None
-                    else:
-                        raise AssertionError('Timed out waiting for needle %s (timeout: %0.2f)' % (str(needle_re), timeout)) from None
+                self._wait_data_or_raise(deadline, needle_re, timeout, failmsg)
                 continue
 
             ret.append(l)
@@ -122,26 +106,34 @@ class OutputChecker(object):
 
         return self.check_line_re(needle_re, timeout=timeout, failmsg=failmsg)
 
+    def check_current_buffer_re(self, needle_re, timeout=0, failmsg=None):
+        deadline = time.time() + timeout
+        needle_re, r = self._prepare_needle(needle_re)
+
+        while True:
+            if r.search(self._partial_buf):
+                return self._partial_buf
+
+            self._wait_data_or_raise(deadline, needle_re, timeout, failmsg)
+
+    def check_current_buffer(self, needle, timeout=0, failmsg=None):
+        if isinstance(needle, str):
+            needle = needle.encode('ascii')
+
+        needle_re = re.escape(needle)
+
+        return self.check_current_buffer_re(needle_re, timeout=timeout, failmsg=failmsg)
+
     def check_no_line_re(self, needle_re, wait=0, failmsg=None):
         deadline = time.time() + wait
-
-        if isinstance(needle_re, str):
-            needle_re = needle_re.encode('ascii')
-
-        r = re.compile(needle_re)
+        needle_re, r = self._prepare_needle(needle_re)
         ret = []
 
         while True:
             try:
                 l = self._lines.pop(0)
             except IndexError:
-                # EOF, so everything good
-                if self._pipe_fd_r == -1:
-                    break
-
-                # Check if should wake up
-                if not self._lines_sem.acquire(timeout = deadline - time.time()):
-                    # Timed out, so everything is good
+                if not self._wait_data(deadline):
                     break
                 continue
 
@@ -161,6 +153,32 @@ class OutputChecker(object):
         needle_re = re.escape(needle)
 
         return self.check_no_line_re(needle_re, wait=wait, failmsg=failmsg)
+    
+    def _prepare_needle(self, needle_re):
+        if isinstance(needle_re, str):
+            needle_re = needle_re.encode('ascii')
+        return needle_re, re.compile(needle_re)
+
+    def _wait_data(self, deadline):
+        """Waits for new data. Returns True if available, False on EOF or timeout."""
+        if self._pipe_fd_r == -1:
+            return False
+        return self._lines_sem.acquire(timeout = deadline - time.time())
+
+    def _wait_data_or_raise(self, deadline, needle_re, timeout, failmsg):
+        # EOF, throw error
+        if self._pipe_fd_r == -1:
+            if failmsg:
+                raise AssertionError("No further messages: " % failmsg) from None
+            else:
+                raise AssertionError('No client waiting for needle %s' % (str(needle_re))) from None
+
+        # Check if should wake up
+        if not self._wait_data(deadline):
+            if failmsg:
+                raise AssertionError(failmsg) from None
+            else:
+                raise AssertionError('Timed out waiting for needle %s (timeout: %0.2f)' % (str(needle_re), timeout)) from None
 
     def clear(self):
         ret = self._lines
