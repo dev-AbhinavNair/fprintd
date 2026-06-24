@@ -156,6 +156,30 @@ test_dev_with_sanitizer:
     paths:
       - _build/meson-logs
 
+test_dev_installed:
+  extends:
+    - .fprintd_build_preconditions
+    - .install_libfprint_dev
+  stage: test
+  script:
+    - meson setup _build --prefix=/usr -Dinstalled-tests=true
+    - meson install -C _build
+    - mv _build _build_dir
+    - rm -rf tests
+    - gnome-desktop-testing-runner --list fprintd
+    - gnome-desktop-testing-runner fprintd
+        --report-directory=_installed-tests-report/failed/
+        --log-directory=_installed-tests-report/logs/
+        --parallel=0
+        --timeout=1000
+  artifacts:
+    expose_as: 'GNOME Tests Runner logs'
+    when: always
+    paths:
+      - _build_dir/meson-logs
+      - _installed-tests-report
+    expire_in: 1 week
+
 # CONTAINERS creation stage
 container_fedora_build:
   extends: .fdo.container-build@fedora
