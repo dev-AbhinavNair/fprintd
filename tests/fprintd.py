@@ -312,7 +312,7 @@ class FPrintdTest(dbusmock.DBusTestCase):
                 else:
                     raise(e)
 
-            self.daemon_log.assert_closed(timeout=5 if self.valgrind else 3)
+            self.daemon_log.assert_closed(timeout=get_timeout('daemon_stop'))
 
             if not self.kill_daemon:
                 self.assertLess(self.daemon.returncode, 128)
