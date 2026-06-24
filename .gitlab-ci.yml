@@ -171,7 +171,6 @@ test_dev_installed:
         --report-directory=_installed-tests-report/failed/
         --log-directory=_installed-tests-report/logs/
         --parallel=0
-        --timeout=1000
   artifacts:
     expose_as: 'GNOME Tests Runner logs'
     when: always

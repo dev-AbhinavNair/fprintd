@@ -76,10 +76,11 @@ unittest_inspector = find_program('unittest_inspector.py')
 foreach pt: python_tests
     r = run_command(unittest_inspector, pt.get('file'), check: false)
     unit_tests = r.stdout().strip().split('\n')
+    has_subtests = r.returncode() == 0 and unit_tests.length() > 0
     base_args = [ pt.get('file') ] + pt.get('extra_args', [])
     suite = pt.get('suite', [])
 
-    if r.returncode() == 0 and unit_tests.length() > 0
+    if has_subtests
         suite += pt.get('name')
     else
         unit_tests = [pt.get('name')]
@@ -88,10 +89,12 @@ foreach pt: python_tests
     foreach ut: unit_tests
         ut_suite = suite
         ut_args = base_args
-        if unit_tests.length() > 1
+
+        if has_subtests
             ut_args += ut
             ut_suite += ut.split('.')[0]
         endif
+
         test(ut,
             python3,
             args: ut_args,
@@ -102,6 +105,31 @@ foreach pt: python_tests
             timeout: pt.get('timeout', 30),
             is_parallel: pt.get('is_parallel', true),
         )
+
+        if installed_tests
+            installed_test_name = pt.get('name')
+            installed_test_args = []
+
+            if has_subtests
+                installed_test_name = '@0@-@1@'.format(pt.get('name'), ut)
+                installed_test_args += ut
+            endif
+
+            installed_test_name = installed_test_name.replace(
+                '.', '_').replace('/', '_').replace(' ', '_')
+
+            configure_file(
+                input: 'test.in',
+                output: installed_test_name + '.test',
+                install_dir: installed_tests_testdir,
+                configuration: {
+                    'exec': installed_tests_execdir / fs.name(pt.get('file')),
+                    'env': ' '.join(pt.get('installed_env', pt.get('env', []))),
+                    'args': ' '.join(installed_test_args),
+                    'extra_content': pt.get('installed_extra_content', ''),
+                },
+            )
+        endif
     endforeach
 
     if installed_tests
@@ -117,17 +145,6 @@ foreach pt: python_tests
                 install_dir: extra_file.get('dir'),
             )
         endforeach
-
-        configure_file(
-            input: 'test.in',
-            output: pt.get('name') + '.test',
-            install_dir: installed_tests_testdir,
-            configuration: {
-                'exec': installed_tests_execdir / fs.name(pt.get('file')),
-                'env': ' '.join(pt.get('installed_env', pt.get('env', []))),
-                'extra_content': pt.get('installed_extra_content', ''),
-            },
-        )
     endif
 endforeach
 
