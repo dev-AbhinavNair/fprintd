@@ -151,7 +151,7 @@ def load_image(img):
 
     return img
 
-if hasattr(os.environ, 'TOPSRCDIR'):
+if 'TOPSRCDIR' in os.environ:
     root = os.environ['TOPSRCDIR']
 else:
     root = os.path.join(os.path.dirname(__file__), '..')
