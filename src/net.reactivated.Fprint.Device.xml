@@ -477,7 +477,7 @@
 				<doc:doc>
 					<doc:summary>
 						<doc:para>
-							A string representing the finger select to be verified.
+							A string representing the finger selected to be verified.
 						</doc:para>
 					</doc:summary>
 				</doc:doc>
