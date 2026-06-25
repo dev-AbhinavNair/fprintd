@@ -619,7 +619,11 @@ class FPrintdVirtualImageDeviceBaseTests(FPrintdTest):
     socket_env = 'FP_VIRTUAL_IMAGE'
     device_driver = 'virtual_image'
     driver_name = 'Virtual image device for debugging'
-    has_identification = True
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.has_identification = True
 
 class FPrintdVirtualDeviceBaseTest(FPrintdVirtualImageDeviceBaseTests):
 
@@ -924,7 +928,11 @@ class FPrintdVirtualStorageDeviceBaseTest(FPrintdVirtualDeviceBaseTest):
     socket_env = 'FP_VIRTUAL_DEVICE_STORAGE'
     device_driver = 'virtual_device_storage'
     driver_name = 'Virtual device with storage and identification for debugging'
-    enroll_stages = 2
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.enroll_stages = 2
 
     def _send_command(self, con, command, *args):
         params = ' '.join(str(p) for p in args)
@@ -1224,7 +1232,11 @@ class FPrintdVirtualNoStorageDeviceBaseTest(FPrintdVirtualStorageDeviceBaseTest)
     socket_env = 'FP_VIRTUAL_DEVICE'
     device_driver = 'virtual_device'
     driver_name = 'Virtual device for debugging'
-    has_identification = False
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.has_identification = False
 
 
 class FPrintdVirtualNoStorageDeviceTest(FPrintdVirtualNoStorageDeviceBaseTest):
