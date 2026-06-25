@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fprintd\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-02 09:49+0000\n"
+"POT-Creation-Date: 2026-06-25 11:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,12 +41,12 @@ msgstr ""
 msgid "Privileges are required to manage fingerprints for other users."
 msgstr ""
 
-#: src/device.c:799
+#: src/device.c:784
 #, c-format
 msgid "Device was not claimed before use"
 msgstr ""
 
-#: src/device.c:808
+#: src/device.c:793
 #, c-format
 msgid "Device already in use by another user"
 msgstr ""
