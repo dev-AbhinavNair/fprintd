@@ -227,10 +227,7 @@ def device_run_script(device, result, done):
         sys.exit(0)
 
     # Emit signal
-    device.EmitSignal(DEVICE_IFACE, 'VerifyStatus', 'sb', [
-                        result,
-                        done
-                      ])
+    device.EmitSignal(DEVICE_IFACE, 'VerifyStatus', 'sb', [result, done])
 
 @dbus.service.method(DEVICE_IFACE,
                      in_signature='s', out_signature='')
@@ -310,10 +307,7 @@ def EmitVerifyStatus(device, result, done):
         raise dbus.exceptions.DBusException(
             'Unknown verify status \'%s\'' % result,
             name='org.freedesktop.DBus.Error.InvalidArgs')
-    device.EmitSignal(DEVICE_IFACE, 'VerifyStatus', 'sb', [
-                          result,
-                          done
-                      ])
+    device.EmitSignal(DEVICE_IFACE, 'VerifyStatus', 'sb', [result, done])
 
 @dbus.service.method(DEVICE_IFACE,
                      in_signature='', out_signature='')
@@ -361,10 +355,7 @@ def EmitEnrollStatus(device, result, done):
         if device.enrolling_finger not in device.fingers[device.claimed_user]:
             device.fingers[device.claimed_user].append(device.enrolling_finger)
 
-    device.EmitSignal(DEVICE_IFACE, 'EnrollStatus', 'sb', [
-                          result,
-                          done
-                      ])
+    device.EmitSignal(DEVICE_IFACE, 'EnrollStatus', 'sb', [result, done])
 
 @dbus.service.method(DEVICE_IFACE,
                      in_signature='', out_signature='')
