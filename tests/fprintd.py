@@ -685,8 +685,10 @@ class FPrintdVirtualDeviceBaseTest(FPrintdVirtualImageDeviceBaseTests):
 
         signal_id = self.device.connect('g-signal', signal_cb)
         self.addCleanup(self.device.disconnect, signal_id)
+        self._signal_cb = signal_cb
 
         signal_id = self.device.connect('g-properties-changed', property_cb)
+        self._property_cb = property_cb
         self.addCleanup(self.device.disconnect, signal_id)
         self._changed_properties = []
 
@@ -890,6 +892,12 @@ class FPrintdVirtualDeviceBaseTest(FPrintdVirtualImageDeviceBaseTests):
                                      dev_path,
                                      FPRINT_NAMESPACE + '.Device',
                                      None)
+
+        signal_id = dev.connect('g-signal', self._signal_cb)
+        self.addCleanup(dev.disconnect, signal_id)
+
+        signal_id = dev.connect('g-properties-changed', self._property_cb)
+        self.addCleanup(dev.disconnect, signal_id)
 
         if claim is not None:
             dev.Claim('(s)', claim)
