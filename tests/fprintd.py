@@ -2982,6 +2982,15 @@ class FPrintdVirtualDeviceIdentificationTests(FPrintdVirtualDeviceVerificationTe
     def setUpClass(cls):
         super().setUpClass()
         cls.verify_finger = 'any'
+        cls.enroll_finger2 = 'right-middle-finger'
+
+    def setUp(self):
+        super().setUp()
+
+        if self.has_identification:
+            self.device.VerifyStop()
+            self.enroll_image('arch', finger=self.enroll_finger2)
+            self.device.VerifyStart('(s)', self.verify_finger)
 
 
 class FPrintdVirtualDeviceStorageIdentificationTests(FPrintdVirtualStorageDeviceBaseTest,
