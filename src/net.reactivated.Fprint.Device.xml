@@ -491,6 +491,25 @@
 
 		<!-- ************************************************************ -->
 
+		<signal name="VerifyFingerMatched">
+			<arg type="s" name="finger_name">
+				<doc:doc>
+					<doc:summary>
+						<doc:para>
+							A string representing the finger that has been verified.
+						</doc:para>
+					</doc:summary>
+				</doc:doc>
+			</arg>
+			<doc:doc>
+				<doc:seealso>
+					<doc:ref type="description" to="fingerprint-names">Fingerprint names</doc:ref>.
+				</doc:seealso>
+			</doc:doc>
+		</signal>
+
+		<!-- ************************************************************ -->
+
 		<signal name="VerifyStatus">
 			<arg type="s" name="result">
 				<doc:doc>

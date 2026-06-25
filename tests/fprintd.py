@@ -675,6 +675,8 @@ class FPrintdVirtualDeviceBaseTest(FPrintdVirtualImageDeviceBaseTests):
                     print('Unexpected signal values')
             elif signal == 'VerifyFingerSelected':
                 self._selected_finger = params[0]
+            elif signal == 'VerifyFingerMatched':
+                self._matched_finger = params[0]
             elif signal == 'VerifyStatus':
                 self._abort = True
                 self._last_result = params[0]
@@ -718,6 +720,7 @@ class FPrintdVirtualDeviceBaseTest(FPrintdVirtualImageDeviceBaseTests):
     def wait_for_result(self, expected=None, max_wait=-1):
         self._last_result = None
         self._verify_stopped = False
+        self._matched_finger = None
         self._abort = False
 
         if max_wait > 0:
@@ -918,12 +921,17 @@ class FPrintdVirtualDeviceBaseTest(FPrintdVirtualImageDeviceBaseTests):
         if selected_finger:
             self.assertEqual(selected_finger, self._selected_finger)
 
+            if selected_finger != 'any':
+                self.assertEqual(selected_finger, self._matched_finger)
+
     def assertVerifyNoMatch(self, selected_finger=None):
         self.wait_for_result(expected='verify-no-match')
         self.assertTrue(self._verify_stopped)
 
         if selected_finger:
             self.assertEqual(selected_finger, self._selected_finger)
+
+        self.assertIsNone(self._matched_finger)
 
 
 class FPrintdVirtualStorageDeviceBaseTest(FPrintdVirtualDeviceBaseTest):

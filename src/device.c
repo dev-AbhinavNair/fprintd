@@ -1287,12 +1287,12 @@ emit_enroll_status (FprintDevice *rdev,
 static void
 report_verify_status (FprintDevice *rdev,
                       gboolean      match,
+                      FpFinger      finger,
                       GError       *error)
 {
+  g_autoptr(SessionData) session = NULL;
   FprintDevicePrivate *priv = fprint_device_get_instance_private (rdev);
   const char *result = verify_result_to_name (match, error);
-
-  g_autoptr(SessionData) session = NULL;
   gboolean done;
 
   done = (error == NULL || error->domain != FP_DEVICE_RETRY);
@@ -1306,6 +1306,15 @@ report_verify_status (FprintDevice *rdev,
       if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
         g_warning ("Verify status already reported. Ignoring %s", result);
       return;
+    }
+
+  if (done && match && finger != FP_FINGER_UNKNOWN)
+    {
+      const char *finger_name = fp_finger_to_name (finger);
+
+      g_debug ("report_verify_status: matched finger %s", finger_name);
+      emit_device_signal (rdev, session, "VerifyFingerMatched",
+                          g_variant_new ("(s)", finger_name));
     }
 
   g_debug ("report_verify_status: result %s", result);
@@ -1569,6 +1578,7 @@ match_cb (FpDevice *device,
 {
   FprintDevice *rdev = user_data;
   FprintDevicePrivate *priv = fprint_device_get_instance_private (rdev);
+  FpFinger finger;
   gboolean matched;
   gboolean cancelled;
 
@@ -1576,8 +1586,9 @@ match_cb (FpDevice *device,
 
   cancelled = g_cancellable_is_cancelled (priv->current_cancellable);
   matched = match != NULL && cancelled == FALSE;
+  finger = matched ? fp_print_get_finger (match) : FP_FINGER_UNKNOWN;
 
-  report_verify_status (rdev, matched, error);
+  report_verify_status (rdev, matched, finger, error);
 }
 
 static void
@@ -1612,7 +1623,7 @@ verify_cb (FpDevice *dev, GAsyncResult *res, void *user_data)
 
       if (error)
         {
-          report_verify_status (rdev, FALSE, error);
+          report_verify_status (rdev, FALSE, FP_FINGER_UNKNOWN, error);
 
           if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
             g_warning ("Device reported an error during verify: %s",
@@ -1657,7 +1668,7 @@ identify_cb (FpDevice *dev, GAsyncResult *res, void *user_data)
 
       if (error)
         {
-          report_verify_status (rdev, FALSE, error);
+          report_verify_status (rdev, FALSE, FP_FINGER_UNKNOWN, error);
 
           if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
             g_warning ("Device reported an error during identify: %s",
