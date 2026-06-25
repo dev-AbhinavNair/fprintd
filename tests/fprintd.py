@@ -711,10 +711,13 @@ class FPrintdVirtualDeviceBaseTest(FPrintdVirtualImageDeviceBaseTests):
             if not 'net.reactivated.Fprint.Error.ClaimDevice' in e.message:
                 raise(e)
 
+    def verify_start(self, finger_name):
+        self._selected_finger = None
+        self.device.VerifyStart('(s)', finger_name)
+
     def wait_for_result(self, expected=None, max_wait=-1):
         self._last_result = None
         self._verify_stopped = False
-        self._selected_finger = None
         self._abort = False
 
         if max_wait > 0:
@@ -1139,7 +1142,7 @@ class FPrintdVirtualStorageDeviceTests(FPrintdVirtualStorageDeviceBaseTest):
 
         # Note: would be thrown anyway by the storage device if we scan something
         self.send_error(FPrint.DeviceError.DATA_NOT_FOUND)
-        self.device.VerifyStart('(s)', 'any')
+        self.verify_start('any')
 
         self.wait_for_result('verify-no-match')
         self.device.VerifyStop()
@@ -1156,7 +1159,7 @@ class FPrintdVirtualStorageDeviceTests(FPrintdVirtualStorageDeviceBaseTest):
 
         # We need to send a print that is known to the device
         self.send_image('other-print')
-        self.device.VerifyStart('(s)', 'right-index-finger')
+        self.verify_start('right-index-finger')
 
         self.wait_for_result('verify-no-match')
         self.device.VerifyStop()
@@ -1169,7 +1172,7 @@ class FPrintdVirtualStorageDeviceTests(FPrintdVirtualStorageDeviceBaseTest):
         self.send_command('REMOVE', 'deleted-print')
 
         self.send_image('other-print')
-        self.device.VerifyStart('(s)', 'right-index-finger')
+        self.verify_start('right-index-finger')
 
         self.wait_for_result('verify-no-match')
         self.device.VerifyStop()
@@ -1242,7 +1245,7 @@ class FPrintdVirtualNoStorageDeviceBaseTest(FPrintdVirtualStorageDeviceBaseTest)
 class FPrintdVirtualNoStorageDeviceTest(FPrintdVirtualNoStorageDeviceBaseTest):
 
     def check_verify_finger_match(self, image, expect_match, finger):
-        self.device.VerifyStart('(s)', 'any')
+        self.verify_start('any')
         self.send_image(image)
         if expect_match:
             self.assertVerifyMatch(selected_finger=finger)
@@ -1453,7 +1456,7 @@ class FPrintdVirtualDeviceTest(FPrintdVirtualDeviceBaseTest):
         self.device.Claim('(s)', '')
 
         with self.assertFprintError('PermissionDenied'):
-            self.device.VerifyStart('(s)', 'any')
+            self.verify_start('any')
 
     def test_unallowed_claim_current_user(self):
         self._polkitd_obj.SetAllowed([''])
@@ -1485,7 +1488,7 @@ class FPrintdVirtualDeviceTest(FPrintdVirtualDeviceBaseTest):
 
     def test_unclaimed_verify_start(self):
         with self.assertFprintError('ClaimDevice'):
-            self.device.VerifyStart('(s)', 'any')
+            self.verify_start('any')
 
     def test_unclaimed_verify_stop(self):
         with self.assertFprintError('ClaimDevice'):
@@ -1791,7 +1794,7 @@ class FPrintdVirtualDeviceClaimedTest(FPrintdVirtualDeviceBaseTest):
 
     def test_verify_with_no_enrolled_prints(self):
         with self.assertFprintError('NoEnrolledPrints'):
-            self.device.VerifyStart('(s)', 'any')
+            self.verify_start('any')
 
     def test_enroll_verify_list_delete(self):
         # This test can trigger a race in older libfprint, only run if we have
@@ -1814,7 +1817,7 @@ class FPrintdVirtualDeviceClaimedTest(FPrintdVirtualDeviceBaseTest):
         self.assertEqual(self.device.ListEnrolledFingers('(s)', 'testuser'), ['right-index-finger'])
 
         # Finger is enrolled, try to verify it
-        self.device.VerifyStart('(s)', 'any')
+        self.verify_start('any')
 
         while not self.finger_needed:
             ctx.iteration(True)
@@ -1827,7 +1830,7 @@ class FPrintdVirtualDeviceClaimedTest(FPrintdVirtualDeviceBaseTest):
         self.assertVerifyNoMatch()
 
         self.device.VerifyStop()
-        self.device.VerifyStart('(s)', 'any')
+        self.verify_start('any')
 
         # Send a retry error (swipe too short); will not stop verification
         self.send_retry()
@@ -1965,14 +1968,14 @@ class FPrintdVirtualDeviceClaimedTest(FPrintdVirtualDeviceBaseTest):
         self.skipTestIfCanWrite(self.state_dir)
 
         with self.assertFprintError('NoEnrolledPrints'):
-            self.device.VerifyStart('(s)', 'any')
+            self.verify_start('any')
 
     def test_verify_read_print_error(self):
         self.enroll_image('whorl', finger='left-thumb')
         self.set_print_not_writable('testuser', FPrint.Finger.LEFT_THUMB)
 
         with self.assertFprintError('NoEnrolledPrints'):
-            self.device.VerifyStart('(s)', 'any')
+            self.verify_start('any')
 
     def test_enroll_stop_cancels(self):
         self.device.EnrollStart('(s)', 'left-index-finger')
@@ -1981,13 +1984,13 @@ class FPrintdVirtualDeviceClaimedTest(FPrintdVirtualDeviceBaseTest):
 
     def test_verify_stop_cancels(self):
         self.enroll_image('whorl')
-        self.device.VerifyStart('(s)', 'any')
+        self.verify_start('any')
         self.device.VerifyStop()
         self.wait_for_result(expected='verify-no-match')
 
     def test_verify_finger_stop_cancels(self):
         self.enroll_image('whorl', finger='left-thumb')
-        self.device.VerifyStart('(s)', 'left-thumb')
+        self.verify_start('left-thumb')
         self.device.VerifyStop()
 
     def test_busy_device_release_on_enroll(self):
@@ -1998,14 +2001,14 @@ class FPrintdVirtualDeviceClaimedTest(FPrintdVirtualDeviceBaseTest):
 
     def test_busy_device_release_on_verify(self):
         self.enroll_image('whorl', finger='left-index-finger')
-        self.device.VerifyStart('(s)', 'any')
+        self.verify_start('any')
 
         self.device.Release()
         self.wait_for_result(expected='verify-no-match')
 
     def test_busy_device_release_on_verify_finger(self):
         self.enroll_image('whorl', finger='left-middle-finger')
-        self.device.VerifyStart('(s)', 'left-middle-finger')
+        self.verify_start('left-middle-finger')
 
         self.device.Release()
         self.wait_for_result(expected='verify-no-match')
@@ -2020,7 +2023,7 @@ class FPrintdVirtualDeviceClaimedTest(FPrintdVirtualDeviceBaseTest):
 
     def test_verify_finger_match(self):
         self.enroll_image('whorl', finger='left-thumb')
-        self.device.VerifyStart('(s)', 'left-thumb')
+        self.verify_start('left-thumb')
         self.send_image('whorl')
         self.wait_for_result()
         self.assertTrue(self._verify_stopped)
@@ -2030,20 +2033,20 @@ class FPrintdVirtualDeviceClaimedTest(FPrintdVirtualDeviceBaseTest):
 
     def test_verify_finger_no_match(self):
         self.enroll_image('whorl', finger='left-thumb')
-        self.device.VerifyStart('(s)', 'left-thumb')
+        self.verify_start('left-thumb')
         self.send_image('tented_arch')
         self.assertVerifyNoMatch(selected_finger='left-thumb')
         self.device.VerifyStop()
 
     def test_verify_finger_no_match_restart(self):
         self.enroll_image('whorl', finger='left-thumb')
-        self.device.VerifyStart('(s)', 'left-thumb')
+        self.verify_start('left-thumb')
         self.send_image('tented_arch')
         self.assertVerifyNoMatch(selected_finger='left-thumb')
         self.device.VerifyStop()
 
         # Immediately starting again after a no-match must work
-        self.device.VerifyStart('(s)', 'left-thumb')
+        self.verify_start('left-thumb')
         self.send_image('whorl')
         self.wait_for_result()
         self.assertTrue(self._verify_stopped)
@@ -2053,7 +2056,7 @@ class FPrintdVirtualDeviceClaimedTest(FPrintdVirtualDeviceBaseTest):
 
     def test_verify_wrong_finger_match(self):
         self.enroll_image('whorl', finger='left-thumb')
-        self.device.VerifyStart('(s)', 'left-toe')
+        self.verify_start('left-toe')
         self.send_image('whorl')
         self.wait_for_result()
         self.assertTrue(self._verify_stopped)
@@ -2063,14 +2066,14 @@ class FPrintdVirtualDeviceClaimedTest(FPrintdVirtualDeviceBaseTest):
 
     def test_verify_wrong_finger_no_match(self):
         self.enroll_image('whorl', finger='right-thumb')
-        self.device.VerifyStart('(s)', 'right-toe')
+        self.verify_start('right-toe')
         self.send_image('tented_arch')
         self.assertVerifyNoMatch(selected_finger='right-thumb')
         self.device.VerifyStop()
 
     def test_verify_any_finger_match(self):
         second_image = self.enroll_multiple_images(return_index=1)
-        self.device.VerifyStart('(s)', 'any')
+        self.verify_start('any')
         self.send_image(second_image)
         self.wait_for_result()
         self.assertTrue(self._verify_stopped)
@@ -2082,7 +2085,7 @@ class FPrintdVirtualDeviceClaimedTest(FPrintdVirtualDeviceBaseTest):
         enrolled, _map = self.enroll_multiple_images()
         verify_image = 'tented_arch'
         self.assertNotIn(verify_image, enrolled)
-        self.device.VerifyStart('(s)', 'any')
+        self.verify_start('any')
         self.send_image(verify_image)
         self.assertVerifyNoMatch(selected_finger)
         self.device.VerifyStop()
@@ -2098,7 +2101,7 @@ class FPrintdVirtualDeviceClaimedTest(FPrintdVirtualDeviceBaseTest):
                 should_match = enrolled_user == verifying_user
 
                 for finger, print in enroll_map[enrolled_user].items():
-                    self.device.VerifyStart('(s)', 'any')
+                    self.verify_start('any')
                     self.send_image(print)
                     if should_match:
                         self.assertVerifyMatch()
@@ -2122,23 +2125,23 @@ class FPrintdVirtualDeviceClaimedTest(FPrintdVirtualDeviceBaseTest):
     def test_verify_finger_not_enrolled(self):
         self.enroll_image('whorl', finger='left-thumb')
         with self.assertFprintError('NoEnrolledPrints'):
-            self.device.VerifyStart('(s)', 'right-thumb')
+            self.verify_start('right-thumb')
 
     def test_verify_finger_not_enrolled_stops_verification(self):
         self.enroll_image('whorl', finger='left-thumb')
         with self.assertFprintError('NoEnrolledPrints'):
-            self.device.VerifyStart('(s)', 'right-thumb')
+            self.verify_start('right-thumb')
 
         with self.assertFprintError('NoActionInProgress'):
             self.device.VerifyStop()
 
     def test_identify_finger_not_enrolled(self):
         with self.assertFprintError('NoEnrolledPrints'):
-            self.device.VerifyStart('(s)', 'any')
+            self.verify_start('any')
 
     def test_identify_finger_not_enrolled_stops_verification(self):
         with self.assertFprintError('NoEnrolledPrints'):
-            self.device.VerifyStart('(s)', 'any')
+            self.verify_start('any')
 
         with self.assertFprintError('NoActionInProgress'):
             self.device.VerifyStop()
@@ -2163,11 +2166,11 @@ class FPrintdVirtualDeviceClaimedTest(FPrintdVirtualDeviceBaseTest):
         self._polkitd_obj.SetAllowed([''])
 
         with self.assertFprintError('PermissionDenied'):
-            self.device.VerifyStart('(s)', 'any')
+            self.verify_start('any')
 
     def test_always_allowed_verify_stop(self):
         self.enroll_image('whorl')
-        self.device.VerifyStart('(s)', 'any')
+        self.verify_start('any')
 
         self._polkitd_obj.SetAllowed([''])
         self.device.VerifyStop()
@@ -2314,7 +2317,7 @@ class FPrintdVirtualDeviceClaimedTest(FPrintdVirtualDeviceBaseTest):
         self.assertFalse(self.finger_needed)
 
         self._changed_properties = []
-        self.device.VerifyStart('(s)', 'any')
+        self.verify_start('any')
         self.assertEqual(self._changed_properties, [])
 
         while not self.finger_needed:
@@ -2552,12 +2555,12 @@ class FPrintdVirtualDeviceEnrollTests(FPrintdVirtualDeviceBaseTest):
         self.stop_on_teardown = False
 
         # If we verify, 'arch' will match, 'whorl' will not match
-        self.device.VerifyStart('(s)', 'any')
+        self.verify_start('any')
         self.send_image('whorl')
         self.assertVerifyNoMatch()
         self.device.VerifyStop()
 
-        self.device.VerifyStart('(s)', 'any')
+        self.verify_start('any')
         self.send_image('arch')
         self.assertVerifyMatch()
         self.device.VerifyStop()
@@ -2576,7 +2579,7 @@ class FPrintdVirtualDeviceEnrollTests(FPrintdVirtualDeviceBaseTest):
         self.enroll_image('whorl', start=False)
         self.device.EnrollStart('(s)', 'right-thumb')
         with self.assertFprintError('AlreadyInUse'):
-            self.device.VerifyStart('(s)', 'any')
+            self.verify_start('any')
 
     def test_verify_stop_during_enroll(self):
         with self.assertFprintError('AlreadyInUse'):
@@ -2750,7 +2753,7 @@ class FPrintdVirtualDeviceVerificationTests(FPrintdVirtualDeviceBaseTest):
         super().setUp()
         self.device.Claim('(s)', 'testuser')
         self.enroll_image('whorl', finger=self.enroll_finger)
-        self.device.VerifyStart('(s)', self.verify_finger)
+        self.verify_start(self.verify_finger)
 
     def tearDown(self):
         if self.stop_on_teardown:
@@ -2830,7 +2833,7 @@ class FPrintdVirtualDeviceVerificationTests(FPrintdVirtualDeviceBaseTest):
         self.assertVerifyNoMatch()
         self.device.VerifyStop()
 
-        self.device.VerifyStart('(s)', self.verify_finger)
+        self.verify_start(self.verify_finger)
         self.send_image('whorl')
         self.assertVerifyMatch()
 
@@ -2845,14 +2848,14 @@ class FPrintdVirtualDeviceVerificationTests(FPrintdVirtualDeviceBaseTest):
         self.assertVerifyNoMatch()
         self.device.VerifyStop()
 
-        self.device.VerifyStart('(s)', self.verify_finger)
+        self.verify_start(self.verify_finger)
         self.send_finger_report(False)
         self.send_image('whorl')
         self.assertVerifyMatch()
 
     def test_verify_start_during_verify(self):
         with self.assertFprintError('AlreadyInUse'):
-            self.device.VerifyStart('(s)', self.verify_finger)
+            self.verify_start(self.verify_finger)
 
     def test_enroll_start_during_verify(self):
         with self.assertFprintError('AlreadyInUse'):
@@ -2990,7 +2993,7 @@ class FPrintdVirtualDeviceIdentificationTests(FPrintdVirtualDeviceVerificationTe
         if self.has_identification:
             self.device.VerifyStop()
             self.enroll_image('arch', finger=self.enroll_finger2)
-            self.device.VerifyStart('(s)', self.verify_finger)
+            self.verify_start(self.verify_finger)
 
 
 class FPrintdVirtualDeviceStorageIdentificationTests(FPrintdVirtualStorageDeviceBaseTest,
@@ -3168,7 +3171,7 @@ class FPrindConcurrentPolkitRequestsTest(FPrintdVirtualStorageDeviceBaseTest):
         gdbus = self.start_hanging_gdbus_claim()
 
         self.device.Claim('(s)', '')
-        self.device.VerifyStart('(s)', 'any')
+        self.verify_start('any')
         self.send_image('whorl')
         self.assertVerifyMatch(selected_finger='left-thumb')
         self.device.VerifyStop()
