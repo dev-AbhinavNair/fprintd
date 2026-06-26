@@ -96,6 +96,9 @@ class TestPamFprintd(dbusmock.DBusTestCase):
         tc = pypamtest.TestCase(pypamtest.PAMTEST_AUTHENTICATE, expected_rv=PAM_AUTHINFO_UNAVAIL)
         res = pypamtest.run_pamtest("toto", "fprintd-pam-test", [tc], [ 'unused' ])
 
+        self.assertFalse(res.info)
+        self.assertFalse(res.errors)
+
     def test_pam_fprintd_identify_error(self):
         self.setup_device()
         script = [
@@ -107,7 +110,7 @@ class TestPamFprintd(dbusmock.DBusTestCase):
         res = pypamtest.run_pamtest("toto", "fprintd-pam-test", [tc], [ 'unused' ])
 
         self.assertRegex(res.info[0], r'Swipe your left little finger across the fingerprint reader')
-        self.assertEqual(len(res.errors), 0)
+        self.assertFalse(res.errors)
 
     def test_pam_fprintd_identify_error2(self):
         self.setup_device()
@@ -120,7 +123,7 @@ class TestPamFprintd(dbusmock.DBusTestCase):
         res = pypamtest.run_pamtest("toto", "fprintd-pam-test", [tc], [ 'unused' ])
 
         self.assertRegex(res.info[0], r'Swipe your left little finger across the fingerprint reader')
-        self.assertEqual(len(res.errors), 0)
+        self.assertFalse(res.errors)
 
     def test_pam_fprintd_identify_error3(self):
         self.setup_device()
@@ -147,7 +150,7 @@ class TestPamFprintd(dbusmock.DBusTestCase):
         res = pypamtest.run_pamtest("toto", "fprintd-pam-test", [tc], [ 'unused' ])
 
         self.assertRegex(res.info[0], r'Swipe your left little finger across the fingerprint reader')
-        self.assertEqual(len(res.errors), 0)
+        self.assertFalse(res.errors)
 
         # Check that we can stop verification and release the device. i.e.
         # this has not been done by PAM already (the real fprintd would notice
@@ -165,6 +168,9 @@ class TestPamFprintd(dbusmock.DBusTestCase):
 
         tc = pypamtest.TestCase(pypamtest.PAMTEST_AUTHENTICATE, expected_rv=PAM_AUTHINFO_UNAVAIL)
         res = pypamtest.run_pamtest("toto", "fprintd-pam-test", [tc], [ 'unused' ])
+
+        self.assertFalse(res.info)
+        self.assertFalse(res.errors)
 
     def test_pam_fprintd_retry(self):
         self.setup_device()
@@ -191,6 +197,9 @@ class TestPamFprintd(dbusmock.DBusTestCase):
 
         tc = pypamtest.TestCase(pypamtest.PAMTEST_AUTHENTICATE, expected_rv=PAM_AUTHINFO_UNAVAIL)
         res = pypamtest.run_pamtest("toto", "fprintd-pam-test", [tc], [ 'unused' ])
+
+        self.assertFalse(res.info)
+        self.assertFalse(res.errors)
 
     def test_pam_fprintd_blocks_unexpected_auth(self):
         self.setup_device()
@@ -253,7 +262,7 @@ class TestPamFprintd(dbusmock.DBusTestCase):
         res = pypamtest.run_pamtest("toto", "fprintd-pam-test", [tc], [ 'unused' ])
 
         self.assertRegex(res.info[0], r'Place your left middle finger on FDO Sandpaper Reader')
-        self.assertEqual(len(res.errors), 0)
+        self.assertFalse(res.errors)
 
     def test_pam_fprintd_multi_reader_not_all_enrolled(self):
         # Add a 1st device with actual enrolled prints
@@ -278,7 +287,7 @@ class TestPamFprintd(dbusmock.DBusTestCase):
         res = pypamtest.run_pamtest("toto", "fprintd-pam-test", [tc], [ 'unused' ])
 
         self.assertRegex(res.info[0], r'Place your left middle finger on FDO Most Used Reader')
-        self.assertEqual(len(res.errors), 0)
+        self.assertFalse(res.errors)
 
     def test_pam_fprintd_last_try_auth(self):
         self.setup_device()
@@ -326,8 +335,8 @@ class TestPamFprintd(dbusmock.DBusTestCase):
         tc = pypamtest.TestCase(pypamtest.PAMTEST_AUTHENTICATE, expected_rv=PAM_AUTHINFO_UNAVAIL)
         res = pypamtest.run_pamtest("toto", "fprintd-pam-test", [tc], [ 'unused' ])
 
-        self.assertEqual(len(res.info), 0)
-        self.assertEqual(len(res.errors), 0)
+        self.assertFalse(res.info)
+        self.assertFalse(res.errors)
 
     def test_pam_timeout(self):
         self.setup_device()
@@ -346,8 +355,8 @@ class TestPamFprintd(dbusmock.DBusTestCase):
 
         tc = pypamtest.TestCase(pypamtest.PAMTEST_AUTHENTICATE, expected_rv=PAM_AUTHINFO_UNAVAIL)
         res = pypamtest.run_pamtest("toto", "fprintd-pam-test", [tc], [ 'unused' ])
-        self.assertEqual(len(res.errors), 0)
-        self.assertEqual(len(res.info), 0)
+        self.assertFalse(res.errors)
+        self.assertFalse(res.info)
 
 if __name__ == '__main__':
     if 'PAM_WRAPPER_SERVICE_DIR' not in os.environ:
