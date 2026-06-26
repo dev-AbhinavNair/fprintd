@@ -3501,6 +3501,7 @@ class FPrintdUtilsTest(FPrintdVirtualStorageDeviceBaseTest):
         elif match:
             verify_finger = enrolled[0] if finger is FPrint.Finger.UNKNOWN else finger_name
             self.send_image(enroll_map[verify_finger])
+            out.check_line(f'Verified finger: {verify_finger}', get_timeout())
             out.check_line('Verify result: verify-match (done)', get_timeout())
             self.assertEqual(verify.wait(), 0)
         else:

@@ -267,14 +267,29 @@ class TestFprintdUtilsVerify(TestFprintdUtilsBase):
         self.assertNotIn(b'Verify result:', out)
         self.selected_finger = self.device_mock.GetSelectedFinger()
 
+        expected_finger = 'any'
         if finger:
             expected_finger = finger
-            if finger == 'any' and not self.device_mock.HasIdentification():
-                expected_finger = self.enrolled_fingers[0]
-            self.assertEqual(self.device_mock.GetSelectedFinger(), expected_finger)
 
-    def assertVerifyMatch(self, match):
-        self.output.check_line(r'Verify result: {} (done)'.format(
+        if expected_finger == 'any' and not self.device_mock.HasIdentification():
+            expected_finger = self.enrolled_fingers[0]
+
+        self.assertEqual(self.selected_finger, expected_finger)
+
+    def assertVerifyMatch(self, match, matched_finger=None):
+        self.output.check_line(f'Verifying: {self.selected_finger}')
+
+        if not matched_finger:
+            matched_finger = self.selected_finger
+
+        if self.selected_finger != 'any':
+            self.assertEqual(matched_finger, self.selected_finger)
+
+        self.assertIsNotNone(matched_finger)
+        self.assertNotEqual(matched_finger, 'any')
+        self.output.check_line(f'Verified finger: {matched_finger}')
+
+        self.output.check_line('Verify result: {} (done)'.format(
             'verify-match' if match else 'verify-no-match'))
 
     def test_fprintd_verify(self):
@@ -290,7 +305,7 @@ class TestFprintdUtilsVerify(TestFprintdUtilsBase):
 
             self.device_mock.EmitVerifyStatus('verify-match', True, finger)
             time.sleep(self.sleep_time)
-            self.assertVerifyMatch(True)
+            self.assertVerifyMatch(True, finger)
 
     def test_fprintd_verify_any_finger_no_identification(self):
         self.start_verify_process(finger='any')
@@ -311,7 +326,7 @@ class TestFprintdUtilsVerify(TestFprintdUtilsBase):
         expected_finger = self.enrolled_fingers[0]
         self.device_mock.EmitVerifyStatus('verify-match', True, expected_finger)
         time.sleep(self.sleep_time)
-        self.assertVerifyMatch(True)
+        self.assertVerifyMatch(True, expected_finger)
 
     def test_fprintd_verify_not_enrolled_fingers(self):
         for finger in [f for f in VALID_FINGER_NAMES if f not in self.enrolled_fingers]:

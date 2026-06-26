@@ -162,6 +162,12 @@ verify_finger_selected (GObject *object, const char *name, void *user_data)
 }
 
 static void
+verify_finger_matched (GObject *object, const char *name, void *user_data)
+{
+  g_print ("Verified finger: %s\n", name);
+}
+
+static void
 verify_started_cb (GObject      *obj,
                    GAsyncResult *res,
                    gpointer      user_data)
@@ -201,6 +207,13 @@ proxy_signal_cb (GDBusProxy  *proxy,
 
       g_variant_get (parameters, "(&s)", &name);
       verify_finger_selected (G_OBJECT (proxy), name, user_data);
+    }
+  else if (g_str_equal (signal_name, "VerifyFingerMatched"))
+    {
+      const gchar *name;
+
+      g_variant_get (parameters, "(&s)", &name);
+      verify_finger_matched (G_OBJECT (proxy), name, verify_state);
     }
 }
 
