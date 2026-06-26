@@ -148,6 +148,7 @@ test_dev:
     - cat _build/meson-logs/coverage.txt || true
   artifacts:
     expose_as: 'Coverage Report'
+    when: always
     paths:
       - _build/meson-logs
       - _build/meson-logs/coveragereport/index.html
@@ -184,7 +185,7 @@ test_dev_installed:
         --parallel=0
   artifacts:
     expose_as: 'GNOME Tests Runner logs'
-    when: always
+    when: on_failure
     paths:
       - _build_dir/meson-logs
       - _installed-tests-report
