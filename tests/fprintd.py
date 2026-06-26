@@ -914,7 +914,7 @@ class FPrintdVirtualDeviceBaseTest(FPrintdVirtualImageDeviceBaseTests):
 
         return bus, dev
 
-    def assertVerifyMatch(self, selected_finger=None):
+    def assertVerifyMatch(self, selected_finger=None, matched_finger=None):
         self.wait_for_result(expected='verify-match')
         self.assertTrue(self._verify_stopped)
 
@@ -922,7 +922,14 @@ class FPrintdVirtualDeviceBaseTest(FPrintdVirtualImageDeviceBaseTests):
             self.assertEqual(selected_finger, self._selected_finger)
 
             if selected_finger != 'any':
-                self.assertEqual(selected_finger, self._matched_finger)
+                matched_finger = selected_finger
+        else:
+            self.assertEqual(self._selected_finger, 'any')
+
+        if matched_finger:
+            self.assertEqual(matched_finger, self._matched_finger)
+        else:
+            self.assertIsNotNone(self._matched_finger)
 
     def assertVerifyNoMatch(self, selected_finger=None):
         self.wait_for_result(expected='verify-no-match')
@@ -930,6 +937,8 @@ class FPrintdVirtualDeviceBaseTest(FPrintdVirtualImageDeviceBaseTests):
 
         if selected_finger:
             self.assertEqual(selected_finger, self._selected_finger)
+        else:
+            self.assertIn(self._selected_finger, ('any', None))
 
         self.assertIsNone(self._matched_finger)
 
@@ -1277,8 +1286,7 @@ class FPrintdVirtualNoStorageDeviceTest(FPrintdVirtualNoStorageDeviceBaseTest):
         self.device.Claim('(s)', 'testuser')
         self.addCleanup(self.device.Release)
 
-        FPrintdVirtualDeviceClaimedTest.test_verify_any_finger_no_match(self,
-            selected_finger=None)
+        FPrintdVirtualDeviceClaimedTest.test_verify_any_finger_no_match(self)
 
 
 class FPrintdManagerTests(FPrintdVirtualDeviceBaseTest):
@@ -1835,7 +1843,7 @@ class FPrintdVirtualDeviceClaimedTest(FPrintdVirtualDeviceBaseTest):
 
         # Try a wrong print; will stop verification
         self.send_image('tented_arch')
-        self.assertVerifyNoMatch()
+        self.assertVerifyNoMatch(selected_finger='right-index-finger')
 
         self.device.VerifyStop()
         self.verify_start('any')
@@ -2095,6 +2103,8 @@ class FPrintdVirtualDeviceClaimedTest(FPrintdVirtualDeviceBaseTest):
         self.assertNotIn(verify_image, enrolled)
         self.verify_start('any')
         self.send_image(verify_image)
+        if not self.has_identification and selected_finger == 'any':
+            selected_finger = enrolled[0]
         self.assertVerifyNoMatch(selected_finger)
         self.device.VerifyStop()
 
@@ -2104,6 +2114,7 @@ class FPrintdVirtualDeviceClaimedTest(FPrintdVirtualDeviceBaseTest):
 
         for verifying_user in enrolled_users:
             self.device.Claim('(s)', verifying_user)
+            user_prints = enroll_map[verifying_user]
 
             for enrolled_user in enrolled_users:
                 should_match = enrolled_user == verifying_user
@@ -2111,10 +2122,11 @@ class FPrintdVirtualDeviceClaimedTest(FPrintdVirtualDeviceBaseTest):
                 for finger, print in enroll_map[enrolled_user].items():
                     self.verify_start('any')
                     self.send_image(print)
+                    selected_finger = 'any' if len(user_prints) > 1 else list(user_prints.keys())[0]
                     if should_match:
-                        self.assertVerifyMatch()
+                        self.assertVerifyMatch(selected_finger, matched_finger=finger)
                     else:
-                        self.assertVerifyNoMatch()
+                        self.assertVerifyNoMatch(selected_finger)
                     self.device.VerifyStop()
 
             self.device.Release()
@@ -2558,19 +2570,20 @@ class FPrintdVirtualDeviceEnrollTests(FPrintdVirtualDeviceBaseTest):
         self.enroll_image('whorl', start=False)
 
         # We can enroll a new image deleting the first
-        self.device.EnrollStart('(s)', 'left-middle-finger')
+        enrolled_finger = 'left-middle-finger'
+        self.device.EnrollStart('(s)', enrolled_finger)
         self.enroll_image('arch', start=False)
         self.stop_on_teardown = False
 
         # If we verify, 'arch' will match, 'whorl' will not match
         self.verify_start('any')
         self.send_image('whorl')
-        self.assertVerifyNoMatch()
+        self.assertVerifyNoMatch(selected_finger=enrolled_finger)
         self.device.VerifyStop()
 
         self.verify_start('any')
         self.send_image('arch')
-        self.assertVerifyMatch()
+        self.assertVerifyMatch(selected_finger=enrolled_finger)
         self.device.VerifyStop()
 
     def test_enroll_duplicate_image(self):
@@ -2781,6 +2794,16 @@ class FPrintdVirtualDeviceVerificationTests(FPrintdVirtualDeviceBaseTest):
         self.wait_for_result()
         self.assertTrue(self._verify_stopped)
         self.assertEqual(self._last_result, expected_error)
+
+    def assertVerifyMatch(self, selected_finger=None):
+        if selected_finger is None:
+            selected_finger = self.verify_finger
+        super().assertVerifyMatch(selected_finger=selected_finger)
+
+    def assertVerifyNoMatch(self, selected_finger=None):
+        if selected_finger is None:
+            selected_finger = self.verify_finger
+        super().assertVerifyNoMatch(selected_finger=selected_finger)
 
     def test_verify_retry_general(self):
         self.assertVerifyRetry(FPrint.DeviceRetry.GENERAL, 'verify-retry-scan')
@@ -3013,7 +3036,12 @@ class FPrintdVirtualDeviceStorageIdentificationTests(FPrintdVirtualStorageDevice
 class FPrintdVirtualDeviceNoStorageIdentificationTests(FPrintdVirtualNoStorageDeviceBaseTest,
                                                        FPrintdVirtualDeviceStorageIdentificationTests):
     # Repeat the tests for the Virtual device (with no storage)
-    pass
+
+    def assertVerifyMatch(self):
+        super().assertVerifyMatch(selected_finger=self.enroll_finger)
+
+    def assertVerifyNoMatch(self):
+        super().assertVerifyNoMatch(selected_finger=self.enroll_finger)
 
 
 class FPrindConcurrentPolkitRequestsTest(FPrintdVirtualStorageDeviceBaseTest):
