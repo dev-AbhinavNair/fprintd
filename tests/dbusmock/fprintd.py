@@ -222,12 +222,28 @@ def glib_sleep(timeout):
     while (waiting):
         GLib.main_context_default().iteration(True)
 
+def emit_verify_status(device, result, done, matched_finger=None):
+    if device.selected_finger in VALID_FINGER_NAMES:
+        matched_finger = device.selected_finger
+    elif matched_finger == 'any':
+        enrolled = device.fingers.get(device.claimed_user) or []
+        if enrolled:
+            matched_finger = enrolled[0]
+
+    if done and result == 'verify-match':
+        if matched_finger not in VALID_FINGER_NAMES:
+            raise dbus.exceptions.DBusException(
+                'Unknown finger name \'%s\'' % matched_finger,
+                name='org.freedesktop.DBus.Error.InvalidArgs')
+        device.EmitSignal(DEVICE_IFACE, 'VerifyFingerMatched', 's', [matched_finger])
+
+    device.EmitSignal(DEVICE_IFACE, 'VerifyStatus', 'sb', [result, done])
+
 def device_run_script(device, result, done):
     if result == 'MOCK: quit':
         sys.exit(0)
 
-    # Emit signal
-    device.EmitSignal(DEVICE_IFACE, 'VerifyStatus', 'sb', [result, done])
+    emit_verify_status(device, result, done)
 
 @dbus.service.method(DEVICE_IFACE,
                      in_signature='s', out_signature='')
@@ -297,8 +313,8 @@ def VerifyStart(device, finger_name):
         raise error
 
 @dbus.service.method(DEVICE_MOCK_IFACE,
-                     in_signature='sb', out_signature='')
-def EmitVerifyStatus(device, result, done):
+                     in_signature='sbs', out_signature='')
+def EmitVerifyStatus(device, result, done, matched_finger):
     if (not device.action) or (device.action != 'verify'):
         raise dbus.exceptions.DBusException(
             'Cannot send verify statuses when not verifying',
@@ -307,7 +323,8 @@ def EmitVerifyStatus(device, result, done):
         raise dbus.exceptions.DBusException(
             'Unknown verify status \'%s\'' % result,
             name='org.freedesktop.DBus.Error.InvalidArgs')
-    device.EmitSignal(DEVICE_IFACE, 'VerifyStatus', 'sb', [result, done])
+
+    emit_verify_status(device, result, done, matched_finger)
 
 @dbus.service.method(DEVICE_IFACE,
                      in_signature='', out_signature='')
@@ -418,7 +435,10 @@ def SetVerifyScript(device, script):
     After VerifyStart is called, signal results will be sent in order after
     a certain timeout declared in seconds. The array contains each
     'result' followed by the 'done' argument for VerifyStatus, and the
-    amount of time to wait before each signal is sent.
+    amount of time to wait before each signal is sent. For a 'verify-match'
+    result a VerifyFingerMatched signal is emitted too, reporting the
+    selected finger as the matched one, or a reproducible enrolled finger
+    when verifying with 'any'.
 
     Returns nothing.
     '''

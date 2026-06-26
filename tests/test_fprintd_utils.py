@@ -265,6 +265,7 @@ class TestFprintdUtilsVerify(TestFprintdUtilsBase):
         out = b''.join(preamble)
 
         self.assertNotIn(b'Verify result:', out)
+        self.selected_finger = self.device_mock.GetSelectedFinger()
 
         if finger:
             expected_finger = finger
@@ -279,7 +280,7 @@ class TestFprintdUtilsVerify(TestFprintdUtilsBase):
     def test_fprintd_verify(self):
         self.start_verify_process()
 
-        self.device_mock.EmitVerifyStatus('verify-match', True)
+        self.device_mock.EmitVerifyStatus('verify-match', True, self.selected_finger)
         time.sleep(self.sleep_time)
         self.assertVerifyMatch(True)
 
@@ -287,14 +288,14 @@ class TestFprintdUtilsVerify(TestFprintdUtilsBase):
         for finger in self.enrolled_fingers:
             self.start_verify_process(finger=finger)
 
-            self.device_mock.EmitVerifyStatus('verify-match', True)
+            self.device_mock.EmitVerifyStatus('verify-match', True, finger)
             time.sleep(self.sleep_time)
             self.assertVerifyMatch(True)
 
     def test_fprintd_verify_any_finger_no_identification(self):
         self.start_verify_process(finger='any')
 
-        self.device_mock.EmitVerifyStatus('verify-match', True)
+        self.device_mock.EmitVerifyStatus('verify-match', True, self.selected_finger)
         time.sleep(self.sleep_time)
         self.assertVerifyMatch(True)
 
@@ -306,8 +307,9 @@ class TestFprintdUtilsVerify(TestFprintdUtilsBase):
             self.device_path)
         self.set_enrolled_fingers(VALID_FINGER_NAMES)
         self.start_verify_process(finger='any')
-
-        self.device_mock.EmitVerifyStatus('verify-match', True)
+    
+        expected_finger = self.enrolled_fingers[0]
+        self.device_mock.EmitVerifyStatus('verify-match', True, expected_finger)
         time.sleep(self.sleep_time)
         self.assertVerifyMatch(True)
 
@@ -331,13 +333,12 @@ class TestFprintdUtilsVerify(TestFprintdUtilsBase):
 
     def test_fprintd_verify_script(self):
         script = [
-            ( 'verify-match', True, 2 )
+            ( 'verify-match', True, int(self.sleep_time * 1000) )
         ]
         self.device_mock.SetVerifyScript(script)
-        time.sleep(2)
 
         self.start_verify_process()
-        time.sleep(2 + self.sleep_time)
+        time.sleep(self.sleep_time * 2)
         self.assertVerifyMatch(True)
 
     def test_fprintd_multiple_verify_fails(self):
