@@ -57,39 +57,140 @@ ElanSPI Enhancement Fork
 ========================
 
 Companion to the [libfprint ElanSPI enhancement fork][libfprint-fork].
-Adds handling for the new `FP_DEVICE_RETRY_DIFFERENT_AREA` retry code.
+Handles the new `FP_DEVICE_RETRY_DIFFERENT_AREA` retry code introduced
+in the elanspi driver.
+
+### Why This Exists
+
+The upstream fprintd has no knowledge of the `FP_DEVICE_RETRY_DIFFERENT_AREA`
+retry code added to libfprint's elanspi driver. Without handling this code:
+- Enrollment retries due to diversity rejection fall through to the generic
+  `default` case, producing the misleading `"enroll-retry-scan"` message
+- Users cannot distinguish "move your finger" from "try again for another
+  reason"
+
+### Hardware
+
+| Component | Detail |
+|-----------|--------|
+| Laptop | ASUS VivoBook X515EA (work machine) |
+| OS | CachyOS (Arch Linux), kernel 7.1.2 |
+| Fingerprint sensor | ElanTech ELAN7001 (`spi-ELAN7001:00`) |
+| libfprint version | 1.94.10+ (forked) |
+| fprintd version | 1.94.5 (forked) |
+| GLib | 2.88 |
 
 ### Changes
 
-- **`src/device.c`**: Map `FP_DEVICE_RETRY_DIFFERENT_AREA` to
-  `"enroll-different-area"` and `"verify-different-area"` D-Bus result
-  strings so clients display a meaningful message.
+1. **`src/device.c`** — Map `FP_DEVICE_RETRY_DIFFERENT_AREA` (enum value 5)
+   to human-readable D-Bus result strings:
 
-- **`tests/dbusmock/fprintd.py`**: Add new result strings to valid
-  status lists.
+   ```c
+   case FP_DEVICE_RETRY_DIFFERENT_AREA:
+     return "verify-different-area";
+   ...
+   case FP_DEVICE_RETRY_DIFFERENT_AREA:
+     return "enroll-different-area";
+   ```
+
+   Previously these fell through to `default:` → `"enroll-retry-scan"`.
+
+2. **`tests/dbusmock/fprintd.py`** — Add the new result strings to the
+   valid status lists so the test mock doesn't reject them as unknown:
+
+   ```python
+   VALID_RESULT_VERIFY_STATUSES.extend(['verify-different-area'])
+   VALID_RESULT_ENROLL_STATUSES.extend(['enroll-different-area'])
+   ```
+
+### Current Tuning (libfprint companion)
+
+These are the parameters set in the companion libfprint fork's elanspi driver
+that drove the need for new retry codes:
+
+| Parameter | Stock | Current | Rationale |
+|-----------|-------|---------|-----------|
+| Image processing | bilinear 2x upscale | contrast norm + unsharp mask | Raw frames have low contrast/noise |
+| `bz3_threshold` | 24 | 8 | Stock value rejected nearly every match on this sensor |
+| `nr_enroll_stages` | 7 | 11 | More template data for diverse area coverage |
+| `diversity_threshold` | none | 18 | Reject swipes too similar to previous ones |
+
+Result: **~80% verify rate** (up from ~50% stock).
+
+### How This Was Built
+
+This fork was developed interactively using **opencode/big-pickle** — an
+AI coding assistant — by a non-C-developer user with no GObject or D-Bus
+expertise. The AI analyzed the libfprint source, proposed the retry code
+handling, and iterated through build-test cycles to get the full stack
+(enrollment → retry → new result string) working end-to-end.
+
+The development process is fully documented in the companion libfprint
+README, including the iterative parameter tuning that led to the current
+80% verify rate.
 
 ### Building
 
+fprintd must be built against the companion libfprint fork (which defines
+`FP_DEVICE_RETRY_DIFFERENT_AREA`). Point meson to the libfprint build
+directory via `PKG_CONFIG_PATH`:
+
 ```bash
+# Build libfprint first (see companion repo)
+cd libfprint
+meson setup builddir -Dintrospection=false -Ddoc=false
+ninja -C builddir
+
+# Build fprintd against it
 cd fprintd
-meson setup builddir
+PKG_CONFIG_PATH=$PWD/../libfprint/builddir/meson-private \
+  meson setup builddir
 ninja -C builddir
 ```
 
 ### Testing
 
-```bash
-# Terminal 1: kill system daemon, run custom one
-sudo pkill fprintd
-LD_LIBRARY_PATH=/path/to/libfprint/builddir/libfprint \
-  ./builddir/src/fprintd
+**Important:** Only root may own the `net.reactivated.Fprint` D-Bus name
+(on Arch: `/usr/share/dbus-1/system.d/net.reactivated.Fprint.conf`).
+The stock daemon will auto-start via D-Bus activation. To test the custom
+build:
 
-# Terminal 2:
-fprintd-enroll
-```
+1. Replace the system libfprint .so (our custom daemon links against it):
+   ```bash
+   sudo cp libfprint/builddir/libfprint/libfprint-2.so.2.0.0 /usr/lib/
+   sudo ldconfig /usr/lib
+   ```
+
+2. Enroll (the system daemon will load our library):
+   ```bash
+   fprintd-delete "$USER"
+   fprintd-enroll
+   ```
+
+3. Expect diversity-driven retries to appear as `"enroll-retry-scan"` (the
+   stock daemon doesn't have the new string). Verify:
+   ```bash
+   fprintd-verify  # repeat 5-10 times
+   ```
+
+4. To see the proper `"enroll-different-area"` string, run the custom daemon
+   as root:
+   ```bash
+   sudo systemctl stop fprintd
+   sudo LD_LIBRARY_PATH=$PWD/../libfprint/builddir/libfprint \
+     G_MESSAGES_DEBUG=all \
+     $PWD/builddir/src/fprintd
+   ```
+   Then in another terminal:
+   ```bash
+   fprintd-enroll
+   ```
+
+On reboot, everything reverts to stock.
 
 ### Related Repos
 
 - **libfprint fork**: https://github.com/dev-AbhinavNair/libfprint
+  (the actual image processing, diversity checking, and driver tuning)
 
 [libfprint-fork]: https://github.com/dev-AbhinavNair/libfprint
