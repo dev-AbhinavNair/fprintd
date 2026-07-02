@@ -51,3 +51,45 @@ Environment=G_MESSAGES_DEBUG=all
 Save the result and restart fprintd using `systemctl restart fprintd.service`.
 
 After that, you can grab the logs using `journalctl -u fprintd.service`.
+
+
+ElanSPI Enhancement Fork
+========================
+
+Companion to the [libfprint ElanSPI enhancement fork][libfprint-fork].
+Adds handling for the new `FP_DEVICE_RETRY_DIFFERENT_AREA` retry code.
+
+### Changes
+
+- **`src/device.c`**: Map `FP_DEVICE_RETRY_DIFFERENT_AREA` to
+  `"enroll-different-area"` and `"verify-different-area"` D-Bus result
+  strings so clients display a meaningful message.
+
+- **`tests/dbusmock/fprintd.py`**: Add new result strings to valid
+  status lists.
+
+### Building
+
+```bash
+cd fprintd
+meson setup builddir
+ninja -C builddir
+```
+
+### Testing
+
+```bash
+# Terminal 1: kill system daemon, run custom one
+sudo pkill fprintd
+LD_LIBRARY_PATH=/path/to/libfprint/builddir/libfprint \
+  ./builddir/src/fprintd
+
+# Terminal 2:
+fprintd-enroll
+```
+
+### Related Repos
+
+- **libfprint fork**: https://github.com/dev-AbhinavNair/libfprint
+
+[libfprint-fork]: https://github.com/dev-AbhinavNair/libfprint
