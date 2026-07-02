@@ -57,6 +57,7 @@ VALID_VERIFY_STATUS = [
     'verify-swipe-too-short',
     'verify-finger-not-centered',
     'verify-remove-and-retry',
+    'verify-different-area',
     'verify-disconnected',
     'verify-unknown-error'
 ]
@@ -70,6 +71,7 @@ VALID_ENROLL_STATUS = [
     'enroll-swipe-too-short',
     'enroll-finger-not-centered',
     'enroll-remove-and-retry',
+    'enroll-different-area',
     'enroll-data-full',
     'enroll-disconnected',
     'enroll-unknown-error'

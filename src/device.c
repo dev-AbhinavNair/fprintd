@@ -590,6 +590,9 @@ verify_result_to_name (gboolean match, GError *error)
         case FP_DEVICE_RETRY_TOO_FAST:
           return "verify-too-fast";
 
+        case FP_DEVICE_RETRY_DIFFERENT_AREA:
+          return "verify-different-area";
+
         default:
           return "verify-retry-scan";
         }
@@ -641,6 +644,9 @@ enroll_result_to_name (gboolean completed, gboolean enrolled, GError *error)
 
         case FP_DEVICE_RETRY_TOO_FAST:
           return "enroll-too-fast";
+
+        case FP_DEVICE_RETRY_DIFFERENT_AREA:
+          return "enroll-different-area";
 
         default:
           return "enroll-retry-scan";
